@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Dubsmash</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+
+    <!--sia strings-->
+    <string name="username">نام کاربری</string>
+    <string name="register">ورود</string>
+    <array name="drawer_list_items">
+        <item>داب های من</item>
+        <item>صداهای من</item>
+        <item>افزودن صدا</item>
+        <item>دانلود شده ها</item>
+        <item>دیگر</item>
+    </array>
+</resources>

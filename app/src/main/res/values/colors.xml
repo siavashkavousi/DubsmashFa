@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="primary">@android:color/holo_purple</color>
+    <color name="primaryDark">#ff9944cc</color>
+    <color name="accent">#999944cc</color>
+    <!--<color name="controlNormal">#9E9E9E</color>-->
+    <color name="controlActivated">@color/accent</color>
+    <color name="controlHighlight">@color/accent</color>
+    <color name="black">#000000</color>
+    <color name="gray_xdark">#212121</color>
+    <color name="gray_dark">#424242</color>
+    <color name="gray">#9E9E9E</color>
+    <color name="gray_light">#E0E0E0</color>
+    <color name="gray_xlight">#F5F5F5</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="mic_off">#F44336</color>
+    <color name="mic_on">#03A9F4</color>
+
+
+    <!--sia colors-->
+    <color name="colorPrimary">@color/primary</color>
+    <color name="colorPrimaryDark">@color/primaryDark</color>
+    <color name="colorAccent">@color/accent</color>
+</resources>

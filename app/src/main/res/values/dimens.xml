@@ -1,0 +1,29 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+    <dimen name="actionBarSize">56dp</dimen>
+    <dimen name="cardsHeaderSize">@dimen/actionBarSize</dimen>
+    <dimen name="text_size_xlarge">22sp</dimen>
+    <dimen name="text_size_large">20sp</dimen>
+    <dimen name="text_size_medium">18sp</dimen>
+    <dimen name="text_size_small">16sp</dimen>
+    <dimen name="text_size_xsmall">14sp</dimen>
+    <dimen name="text_size_xxsmall">12sp</dimen>
+    <dimen name="space_xlarge">20dp</dimen>
+    <dimen name="space_large">16dp</dimen>
+    <dimen name="space_medium">10dp</dimen>
+    <dimen name="space_low">5dp</dimen>
+    <dimen name="apps_icon_size">@dimen/actionBarSize</dimen>
+    <dimen name="dialog_buttons_panel_size">48dp</dimen>
+    <dimen name="dialog_buttons_size">36dp</dimen>
+    <dimen name="line_size_thick">2dp</dimen>
+    <dimen name="line_size">1dp</dimen>
+    <dimen name="dialog_title_text_size">@dimen/text_size_large</dimen>
+    <dimen name="dialog_message_text_size">@dimen/text_size_medium</dimen>
+
+
+    <!--sia dimens-->
+    <dimen name="fab_margin">16dp</dimen>
+    <dimen name="toolbar_size">@dimen/actionBarSize</dimen>
+</resources>

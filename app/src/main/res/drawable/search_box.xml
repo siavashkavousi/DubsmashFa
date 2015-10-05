@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+     >
+    
+    <corners android:radius="35dp"/>
+    
+    <gradient android:startColor="@color/gray"
+        android:centerColor="@color/white"
+        android:endColor="@color/white"
+        android:angle="-90" />
+    
+    <padding android:left="10dp"
+        android:top="10dp"
+        android:right="10dp"
+        android:bottom="0dp"/>
+    
+</shape>
