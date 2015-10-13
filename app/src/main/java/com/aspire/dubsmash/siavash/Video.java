@@ -3,6 +3,7 @@ package com.aspire.dubsmash.siavash;
 /**
  * Created by sia on 10/4/15.
  */
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 

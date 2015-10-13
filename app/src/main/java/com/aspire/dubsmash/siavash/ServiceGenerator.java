@@ -1,5 +1,6 @@
 package com.aspire.dubsmash.siavash;
 
+import retrofit.Endpoint;
 import retrofit.RestAdapter;
 import retrofit.client.UrlConnectionClient;
 
@@ -11,8 +12,8 @@ public class ServiceGenerator {
     private ServiceGenerator() {
     }
 
-    public static <S> S createService(Class<S> serviceClass, String baseUrl) {
-        return new RestAdapter.Builder().setEndpoint(baseUrl).setLogLevel(RestAdapter.LogLevel.FULL)
+    public static <S> S createService(Class<S> serviceClass, Endpoint endpoint) {
+        return new RestAdapter.Builder().setEndpoint(endpoint).setLogLevel(RestAdapter.LogLevel.FULL)
                 .setClient(new UrlConnectionClient()).build().create(serviceClass);
     }
 }

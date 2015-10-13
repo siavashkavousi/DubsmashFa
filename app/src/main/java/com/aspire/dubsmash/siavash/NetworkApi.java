@@ -13,6 +13,7 @@ import retrofit.http.POST;
 import retrofit.http.Part;
 import retrofit.http.Path;
 import retrofit.mime.TypedFile;
+import rx.Observable;
 
 /**
  * network interface
@@ -40,6 +41,8 @@ public interface NetworkApi {
     @FormUrlEncoded @POST("/register.php") void registerUsername(@Field("user_name") String username, Callback<SingleResult<User>> callback);
 
     @GET("/{url}") void downloadSingleData(@Path("url") String url, Callback<Response> callback);
+
+    @GET("/{url}") Observable<Response> downloadSingleData(@Path("url") String url);
 
     @GET("/{url}") void downloadMultipleData(@Part("url") String url, Callback<List<Response>> callback);
 }

@@ -17,6 +17,8 @@ public class Sound {
     @SerializedName("sound_likes") @Expose private String soundLikes;
     @SerializedName("sound_tags") @Expose private List<String> soundTags = new ArrayList<>();
 
+    private boolean isLiked;
+
     /**
      *
      * @return
@@ -143,4 +145,11 @@ public class Sound {
         this.soundTags = soundTags;
     }
 
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setIsLiked(boolean isLiked) {
+        this.isLiked = isLiked;
+    }
 }
