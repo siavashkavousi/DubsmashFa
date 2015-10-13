@@ -22,6 +22,7 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 public class FragmentVideos extends Fragment {
+    private static final String TAG = FragmentVideos.class.getSimpleName();
     @Bind(R.id.items_recycler_view) RecyclerView mVideosRecyclerView;
     @Bind(R.id.switch_lt) Switch mSwitchLT;
 
@@ -30,14 +31,21 @@ public class FragmentVideos extends Fragment {
     private boolean isFirstRun = true;
     private int group = 0, quantity = 15;
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_sounds_videos, container, false);
         ButterKnife.bind(this, view);
         mVideos = new ArrayList<>();
+
         setUpSwitch();
-        downloadInitialSounds();
         return view;
+    }
+
+    @Override public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && getView() != null) {
+            downloadInitialVideos();
+            downloadVideos(Constants.LATEST, "1", "1");
+        }
     }
 
     private void setUpSwitch() {
@@ -52,15 +60,15 @@ public class FragmentVideos extends Fragment {
         mAdapter = new AdapterVideos(mVideos);
         mVideosRecyclerView.setAdapter(mAdapter);
         mVideosRecyclerView.addItemDecoration(new SpacesItemDecoration(Constants.RECYCLE_VIEW_SPACE));
-        mVideosRecyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener<LinearLayoutManager>(linearLayoutManager) {
-            @Override public void onLoadMore(int currentPage) {
-                if (mSwitchLT.isChecked()) {
-                    downloadVideos(Constants.LATEST, String.valueOf(++group), String.valueOf(quantity));
-                } else {
-                    downloadVideos(Constants.TRENDING, String.valueOf(++group), String.valueOf(quantity));
-                }
-            }
-        });
+//        mVideosRecyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener<LinearLayoutManager>(linearLayoutManager) {
+//            @Override public void onLoadMore(int currentPage) {
+//                if (mSwitchLT.isChecked()) {
+//                    downloadVideos(Constants.LATEST, String.valueOf(++group), String.valueOf(quantity));
+//                } else {
+//                    downloadVideos(Constants.TRENDING, String.valueOf(++group), String.valueOf(quantity));
+//                }
+//            }
+//        });
     }
 
     private void downloadVideos(String retrieveMode, String group, String quantity) {
@@ -79,12 +87,11 @@ public class FragmentVideos extends Fragment {
         });
     }
 
-    private void downloadInitialSounds() {
+    private void downloadInitialVideos() {
         if (mSwitchLT.isChecked()) {
             downloadVideos(Constants.LATEST, String.valueOf(group), String.valueOf(quantity));
         } else {
             downloadVideos(Constants.TRENDING, String.valueOf(group), String.valueOf(quantity));
         }
     }
-
 }

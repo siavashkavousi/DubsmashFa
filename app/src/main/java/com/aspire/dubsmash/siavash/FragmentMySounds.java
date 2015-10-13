@@ -1,6 +1,7 @@
 package com.aspire.dubsmash.siavash;
 
 import android.app.Fragment;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.aspire.dubsmash.R;
 import com.aspire.dubsmash.util.Constants;
+import com.aspire.dubsmash.util.Util;
 
 import java.io.File;
 import java.io.FileFilter;
@@ -31,24 +33,12 @@ public class FragmentMySounds extends Fragment {
 
     private AdapterMySounds mAdapter;
     private List<String> mSoundsPath;
+    private List<String> mSoundsTitle;
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    @Nullable @Override public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_my_sounds_videos, container, false);
         ButterKnife.bind(this, view);
-        File mSoundsDirectory = new File(Constants.MY_SOUNDS_PATH);
-        File[] files = mSoundsDirectory.listFiles(new FileFilter() {
-            @Override
-            public boolean accept(File f) {
-                if (f.getAbsolutePath().endsWith(".m4a"))
-                    return true;
-                return false;
-            }
-        });
-        mSoundsPath = new ArrayList<>();
-        for (File f : files)
-            mSoundsPath.add(f.getAbsolutePath());
+        getSoundFiles();
         setUpRecyclerView();
         return view;
     }
@@ -56,7 +46,29 @@ public class FragmentMySounds extends Fragment {
     private void setUpRecyclerView() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         mSoundsRecyclerView.setLayoutManager(linearLayoutManager);
-        mAdapter = new AdapterMySounds(mSoundsPath);
+        mAdapter = new AdapterMySounds(this, mSoundsPath, mSoundsTitle);
         mSoundsRecyclerView.setAdapter(mAdapter);
+    }
+
+    private void getSoundFiles() {
+        File soundsDirectory = new File(Constants.MY_SOUNDS_PATH);
+        File[] files = soundsDirectory.listFiles(new FileFilter() {
+            @Override
+            public boolean accept(File f) {
+                return f.getAbsolutePath().endsWith(".m4a");
+            }
+        });
+        if (files == null) return;
+        mSoundsPath = new ArrayList<>();
+        mSoundsTitle = new ArrayList<>();
+        for (File f : files) {
+            mSoundsPath.add(f.getAbsolutePath());
+            mSoundsTitle.add(f.getName());
+        }
+    }
+
+    @Override public void onDetach() {
+        super.onDetach();
+        Util.stopAndReleaseMediaPlayer(mAdapter.getMediaPlayer());
     }
 }

@@ -12,6 +12,7 @@ import android.widget.Switch;
 
 import com.aspire.dubsmash.R;
 import com.aspire.dubsmash.util.Constants;
+import com.aspire.dubsmash.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,7 @@ public class FragmentSounds extends Fragment {
 
     private AdapterSounds mAdapter;
     private List<Sound> mSounds;
+    private boolean isViewShown = false;
     private boolean isFirstRun = true;
     private int group = 0, quantity = 15;
 
@@ -41,8 +43,14 @@ public class FragmentSounds extends Fragment {
         ButterKnife.bind(this, view);
         mSounds = new ArrayList<>();
         setUpSwitch();
-        downloadInitialSounds();
         return view;
+    }
+
+    @Override public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && getView() != null) {
+            downloadInitialSounds();
+        }
     }
 
     private void setUpSwitch() {
@@ -52,7 +60,7 @@ public class FragmentSounds extends Fragment {
     }
 
     private void setUpRecyclerView() {
-        isFirstRun= false;
+        isFirstRun = false;
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         mSoundsRecyclerView.setLayoutManager(linearLayoutManager);
         mAdapter = new AdapterSounds(mSounds);
@@ -89,6 +97,13 @@ public class FragmentSounds extends Fragment {
             downloadSounds(Constants.LATEST, String.valueOf(group), String.valueOf(quantity));
         } else {
             downloadSounds(Constants.TRENDING, String.valueOf(group), String.valueOf(quantity));
+        }
+    }
+
+    @Override public void onDetach() {
+        super.onDetach();
+        if (mAdapter != null && mAdapter.getMediaPlayer() != null) {
+            Util.stopAndReleaseMediaPlayer(mAdapter.getMediaPlayer());
         }
     }
 }

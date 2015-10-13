@@ -4,6 +4,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.VideoView;
 
 import com.aspire.dubsmash.R;
@@ -40,33 +41,25 @@ public class AdapterMyDubs extends RecyclerView.Adapter<AdapterMyDubs.VideosView
         return mVideosPath.isEmpty() ? 0 : mVideosPath.size();
     }
 
-    public void addData(List<String> data) {
-        mVideosPath.addAll(data);
-        notifyDataSetChanged();
-    }
-
     public class VideosViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        @Bind(R.id.item_video) VideoView videoItem;
+        @Bind(R.id.item_video) VideoView mVideoItem;
+        @Bind(R.id.item_progress_bar) ProgressBar mProgressBar;
 
         public VideosViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
 
-        private void bindViews(String videoPath) {
-//            videoItem.addSubtitleSource(is, null);
-//            textView.setText(t);
+        private void bindViews(String path) {
+            mVideoItem.setVideoPath(path);
         }
 
-        @Override
-        public void onClick(View v) {
-//            Intent intent = new Intent(mContext, ActivityDesign.class);
-//            intent.putExtra(Constants.CHOOSED_NAME, mTitle.getText());
-//            intent.putExtra(Constants.CHOOSED_NAME, mIds.get(mPosition));
-//            mContext.startActivity(intent);
-//            if (mMainContext instanceof ActivityMain) {
-//                ((ActivityMain) mMainContext).overridePendingTransition(R.anim.slide_in_bottom, 0);
-//            }
+
+        @Override public void onClick(View v) {
+            int id = v.getId();
+            if (id == mVideoItem.getId()) {
+                mVideoItem.start();
+            }
         }
     }
 }

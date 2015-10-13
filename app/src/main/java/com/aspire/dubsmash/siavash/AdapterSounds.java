@@ -1,20 +1,15 @@
 package com.aspire.dubsmash.siavash;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.AsyncTask;
-import android.support.annotation.MainThread;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +26,6 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -68,8 +62,11 @@ public class AdapterSounds extends RecyclerView.Adapter<AdapterSounds.SoundsView
 
     public void addData(List<Sound> data) {
         mSounds = data;
-        Log.d(TAG, mSounds.size() + "");
         notifyDataSetChanged();
+    }
+
+    public MediaPlayer getMediaPlayer() {
+        return mMediaPlayer;
     }
 
     public class SoundsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -81,19 +78,19 @@ public class AdapterSounds extends RecyclerView.Adapter<AdapterSounds.SoundsView
 
         private Context mContext;
         private Sound mSound;
-        private boolean isLiked;
 
         public SoundsViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
             mContext = itemView.getContext();
-            isLiked = false;
             setListeners();
         }
 
         private void bindViews(Sound sound) {
             mTitle.setText(sound.getSoundTitle());
+            if (sound.isLiked()) mLikeButton.setImageResource(R.drawable.favorite_selected);
+            else mLikeButton.setImageResource(R.drawable.favorite_unselected);
             mUploadedBy.setText(sound.getSoundSendername());
             mSound = sound;
         }
@@ -104,14 +101,10 @@ public class AdapterSounds extends RecyclerView.Adapter<AdapterSounds.SoundsView
             mPlaySound.setOnClickListener(this);
         }
 
-        @OnClick(R.id.go_to_dubmaker) void goToDubMaker() {
-
-        }
-
         @Override public void onClick(View v) {
             int id = v.getId();
             if (id == mLikeButton.getId()) {
-                if (!isLiked) {
+                if (!mSound.isLiked()) {
                     mLikeButton.setImageResource(R.drawable.favorite_selected);
                     ActivityMain.sNetworkApi.getSoundLikes(Util.getUserId(mContext), mSound.getSoundId(), new Callback<Response>() {
                         @Override public void success(Response response, Response response2) {
@@ -122,20 +115,14 @@ public class AdapterSounds extends RecyclerView.Adapter<AdapterSounds.SoundsView
 
                         }
                     });
-                    isLiked = true;
+                    mSound.setIsLiked(true);
                 } else {
                     mLikeButton.setImageResource(R.drawable.favorite_unselected);
-                    isLiked = false;
+                    mSound.setIsLiked(false);
                 }
             } else if (id == mPlaySound.getId()) {
                 if (isPlaying) {
-                    if (mMediaPlayer != null) {
-                        if (mMediaPlayer.isPlaying())
-                            mMediaPlayer.stop();
-                        mMediaPlayer.reset();
-                        mMediaPlayer.release();
-                        mMediaPlayer = null;
-                    }
+                    Util.stopAndReleaseMediaPlayer(mMediaPlayer);
                     mPlayingSoundButton.setImageResource(R.drawable.ic_play);
                     mPlayingSoundButton = mPlaySound;
                     mPlaySound.setImageResource(R.drawable.download);
@@ -147,7 +134,7 @@ public class AdapterSounds extends RecyclerView.Adapter<AdapterSounds.SoundsView
                 ActivityMain.sNetworkApi.downloadSingleData(mSound.getSoundUrl(), new Callback<Response>() {
                     @Override public void success(Response response, Response response2) {
                         try {
-                            Util.saveToFile(Util.getFromStream(response.getBody().in()), new File(Constants.TEMP_SOUND_PATH).getPath());
+                            Util.saveToFileSync(Util.getFromStream(response.getBody().in()), new File(Constants.TEMP_SOUND_PATH).getPath());
                             if (mPlayingSoundButton == mPlaySound) {
                                 mPlaySound.setImageResource(R.drawable.ic_pause);
                                 mMediaPlayer = MediaPlayer.create(mContext, Uri.parse(Constants.TEMP_SOUND_PATH));
@@ -181,7 +168,7 @@ public class AdapterSounds extends RecyclerView.Adapter<AdapterSounds.SoundsView
                     public void success(Response response, Response response2) {
                         progressDialog.dismiss();
                         try {
-                            Util.saveToFile(Util.getFromStream(response.getBody().in()), new File(Constants.TEMP_SOUND_PATH).getPath());
+                            Util.saveToFileSync(Util.getFromStream(response.getBody().in()), new File(Constants.TEMP_SOUND_PATH).getPath());
                         } catch (IOException e) {
                             e.printStackTrace();
                         }

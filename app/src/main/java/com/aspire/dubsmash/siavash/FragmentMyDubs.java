@@ -3,7 +3,7 @@ package com.aspire.dubsmash.siavash;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,11 +26,9 @@ import butterknife.ButterKnife;
 public class FragmentMyDubs extends Fragment {
     private static final String TAG = FragmentSounds.class.getSimpleName();
 
-    @Bind(R.id.items_recycler_view)
-    RecyclerView mVideosRecyclerView;
+    @Bind(R.id.items_recycler_view) RecyclerView mVideosRecyclerView;
 
     private AdapterMyDubs mAdapter;
-    private List<Sound> mSounds;
 
     @Nullable
     @Override
@@ -42,32 +40,22 @@ public class FragmentMyDubs extends Fragment {
         File[] files = mDubsDirectory.listFiles(new FileFilter() {
             @Override
             public boolean accept(File f) {
-                if (f.getAbsolutePath().endsWith(".mp4"))
-                    return true;
-                return false;
+                return f.getAbsolutePath().endsWith(".mp4");
             }
         });
-        List mDubsPath = new ArrayList<>();
-        for (File f : files)
+        List<String> mDubsPath = new ArrayList<>();
+        for (File f : files) {
             mDubsPath.add(f.getAbsolutePath());
-        setUpRecyclerView(mDubsPath);
+        }
+        mAdapter = new AdapterMyDubs(mDubsPath);
+
+        setUpRecyclerView();
         return view;
     }
 
-    private void setUpRecyclerView(List<String> data) {
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getActivity(), 3);
-        mVideosRecyclerView.setLayoutManager(gridLayoutManager);
-        mAdapter = new AdapterMyDubs(data);
+    private void setUpRecyclerView() {
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        mVideosRecyclerView.setLayoutManager(linearLayoutManager);
         mVideosRecyclerView.setAdapter(mAdapter);
-        mVideosRecyclerView.addOnScrollListener(new EndlessRecyclerOnScrollListener<GridLayoutManager>(gridLayoutManager) {
-            @Override
-            public void onLoadMore(int currentPage) {
-//                List<String> names = new ArrayList<>();
-//                for (int i = size; i < size + 60; i++) {
-//                    names.add("kir e asb " + i);
-//                }
-//                mAdapter.addData(names);
-            }
-        });
     }
 }
