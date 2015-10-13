@@ -1,0 +1,10 @@
+/gradle
+/build
+/.gradle
+/.idea
+/local.properties
+/settings.gradle
+/gradle.properties
+/gradle/wrapper/gradle-wrapper.properties
+/build.gradle
+# Created by .ignore support plugin (hsz.mobi)

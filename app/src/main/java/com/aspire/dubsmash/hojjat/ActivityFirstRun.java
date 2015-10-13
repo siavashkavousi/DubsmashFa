@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.aspire.dubsmash.R;
+import com.aspire.dubsmash.siavash.ActivityMain;
 import com.aspire.dubsmash.util.Constants;
 import com.aspire.dubsmash.util.Util;
 
@@ -72,7 +73,7 @@ public class ActivityFirstRun extends AppCompatActivity {
                 Util.setUserName(ActivityFirstRun.this, nameInput.getText().toString());
                 Util.registerUser(ActivityFirstRun.this);
                 Util.setIsFirstRun(ActivityFirstRun.this, false);
-                ActivityFirstRun.this.startActivity(new Intent(ActivityFirstRun.this, ActivityMainTokhomV.class));
+                ActivityFirstRun.this.startActivity(new Intent(ActivityFirstRun.this, ActivityMain.class));
                 finish();
             }
         });

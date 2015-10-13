@@ -77,10 +77,10 @@ public class ActivitySendSound extends AppCompatActivity {
 //        addMetadata(); problem with samsung
         saveToMySounds();
         sendSoundToServer();
-        // TODO : go to FragmentMySounds from ActivityMain ok!
-//        Intent intent = new Intent(this, ActivityMySounds.class);
-//        intent.putExtra(Constants.SOUND_PATH, audioPath);
-//        startActivity(intent);
+        Intent intent = new Intent(this, ActivityMain.class);
+        intent.putExtra(Constants.WHICH_FRAGMENT, Constants.FRAGMENT_MY_SOUNDS);
+        intent.putExtra(Constants.SOUND_PATH, audioPath);
+        startActivity(intent);
         finish();
     }
 
