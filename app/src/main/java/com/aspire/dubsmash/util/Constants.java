@@ -34,4 +34,13 @@ public class Constants {
     public static final boolean IS_DEBUG = true;
     public static final String PRIVATE_SOUND = ".privateSound";
     public static final int RECYCLE_VIEW_SPACE = 2;
+
+    public static final String WHICH_FRAGMENT = "whichFragment";
+    public static final String NO_FRAGMENT = "noFragment";
+    public static final String FRAGMENT_VIEW_PAGER = "fragmentViewPager";
+    public static final String FRAGMENT_SOUNDS = "fragmentSounds";
+    public static final String FRAGMENT_VIDEOS = "fragmentVideos";
+    public static final String FRAGMENT_MY_SOUNDS = "fragmentMySounds";
+    public static final String FRAGMENT_MY_DUBS = "fragmentMyDubs";
+    public static final String FRAGMENT_DOWNLOADS = "fragmentDownloads";
 }

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_view_pager"
+            android:title="@string/my_dubs"/>
+        <item
+            android:id="@+id/nav_dubs"
+            android:icon="@android:drawable/ic_menu_gallery"
+            android:title="@string/my_dubs"/>
+        <item
+            android:id="@+id/nav_sounds"
+            android:icon="@android:drawable/ic_btn_speak_now"
+            android:title="@string/my_sounds"/>
+        <item
+            android:id="@+id/nav_add_sounds"
+            android:icon="@android:drawable/ic_menu_slideshow"
+            android:title="@string/add_sounds"/>
+        <item
+            android:id="@+id/nav_download"
+            android:icon="@android:drawable/ic_menu_manage"
+            android:title="@string/downloads"/>
+    </group>
+
+</menu>

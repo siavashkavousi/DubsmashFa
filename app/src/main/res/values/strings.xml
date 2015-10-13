@@ -3,9 +3,16 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
     <!--sia strings-->
     <string name="username">نام کاربری</string>
     <string name="register">ورود</string>
+    <string name="my_dubs">داب های من</string>
+    <string name="my_sounds">صداهای من</string>
+    <string name="add_sounds">افزودن صدا</string>
+    <string name="downloads">دانلود شده ها</string>
     <array name="drawer_list_items">
         <item>داب های من</item>
         <item>صداهای من</item>

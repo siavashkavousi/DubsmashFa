@@ -4,10 +4,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Typeface;
+import android.media.MediaPlayer;
 import android.media.ThumbnailUtils;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
@@ -18,44 +18,44 @@ import android.widget.ToggleButton;
 
 import com.aspire.dubsmash.siavash.ActivityMain;
 import com.aspire.dubsmash.siavash.ApplicationBase;
+import com.aspire.dubsmash.siavash.Host;
 import com.aspire.dubsmash.siavash.SingleResult;
 import com.aspire.dubsmash.siavash.User;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileFilter;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import rx.Observable;
+import rx.Observer;
+import rx.Subscriber;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by sia on 10/3/15.
  */
 public class Util {
+    public static final String USER_ID = "USER_ID";
     private static final String TAG = Util.class.getSimpleName();
     private static final String FONTS_PATH = "fonts/";
     private static final String FONTS_EXTENTION = ".ttf";
-    private static Map<String, Typeface> fonts = new HashMap<>();
     private static final String MAIN_PREFRENCES = "MAIN_PREFRENCES";
     private static final String USER_NAME = "USER_NAME";
-    public static final String USER_ID = "USER_ID";
     private static final String IS_FIRST_RUN = "IS_FIRST_RUN";
-
+    public static String BASE_URL = "http://api.farsi-dub.mokhi.ir";
+    private static Map<String, Typeface> fonts = new HashMap<>();
     private static FontFamily appDefaultFontFamily = FontFamily.Naskh;
 
     public static void setUserName(Context context, String userName) {
         SharedPreferences preferences = context.getSharedPreferences(MAIN_PREFRENCES, Context.MODE_PRIVATE);
-        preferences.edit().putString(USER_NAME, userName).commit();
+        preferences.edit().putString(USER_NAME, userName).apply();
     }
 
     public static String getPhoneId(Context context) {
@@ -113,7 +113,7 @@ public class Util {
 
     public static void setIsFirstRun(Context context, boolean isFirstRun) {
         SharedPreferences preferences = context.getSharedPreferences(MAIN_PREFRENCES, Context.MODE_PRIVATE);
-        preferences.edit().putBoolean(IS_FIRST_RUN, isFirstRun).commit();
+        preferences.edit().putBoolean(IS_FIRST_RUN, isFirstRun).apply();
     }
 
     public static void createDirectories() {
@@ -141,7 +141,7 @@ public class Util {
 
     public static void setUserId(Context context, String userId) {
         SharedPreferences preferences = context.getSharedPreferences(MAIN_PREFRENCES, Context.MODE_PRIVATE);
-        preferences.edit().putString(USER_ID, userId).commit();
+        preferences.edit().putString(USER_ID, userId).apply();
     }
 
     public static void registerUserIfNeeded(Context context) {
@@ -152,40 +152,6 @@ public class Util {
     public static boolean userHasRegistered(Context context) {
         return context.getSharedPreferences(MAIN_PREFRENCES, Context.MODE_PRIVATE).contains(USER_ID);
     }
-
-    public enum FontFamily {
-        Naskh("Naskh"),
-        Default(Naskh.toString());
-
-        private String text;
-
-        FontFamily(String text) {
-            this.text = text;
-        }
-
-        @Override
-        public String toString() {
-            return text;
-        }
-    }
-
-    public enum FontWeight {
-        Bold("Bold"),
-        Regular("Regular");
-
-
-        private String text;
-
-        FontWeight(String text) {
-            this.text = text;
-        }
-
-        @Override
-        public String toString() {
-            return text;
-        }
-    }
-
 
     static public void setFont(Context context, FontFamily fontFamily, FontWeight fontWeight, Object... elements) {
         Typeface typeFace = getTypeFace(context, fontFamily, fontWeight);
@@ -306,13 +272,38 @@ public class Util {
         return file;
     }
 
-    public static void saveToFile(byte[] bytes, String path) throws IOException {
-        FileOutputStream fileOuputStream = new FileOutputStream(path);
-        fileOuputStream.write(bytes);
+    public static <T extends Observer> void saveToFileAsync(Context context, final InputStream is, final String path, T observer) {
+        Observable observable = Observable.create(new Observable.OnSubscribe<Void>() {
+            @Override public void call(Subscriber<? super Void> subscriber) {
+                try {
+                    byte[] bytes = getFromStream(is);
+                    saveToFileSync(bytes, path);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                subscriber.onCompleted();
+            }
+        }).subscribeOn(Schedulers.computation());
+
+        if (observer == null) {
+            observable.subscribe();
+        } else {
+            observable.subscribe(observer);
+        }
+
+        ApplicationBase.getRefWatcher(context).watch(observable);
     }
 
-    @Nullable
-    public static String getUserId(Context context) {
+    public static void saveToFileSync(byte[] bytes, String path) {
+        try {
+            FileOutputStream fileOuputStream = new FileOutputStream(path);
+            fileOuputStream.write(bytes);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Nullable public static String getUserId(Context context) {
         SharedPreferences preferences = context.getSharedPreferences(MAIN_PREFRENCES, Context.MODE_PRIVATE);
         if (!preferences.contains(USER_ID))
             registerUser(context);
@@ -337,7 +328,66 @@ public class Util {
         return Constants.TEMP_THUMBNAIL_PATH;
     }
 
-    public static String getVideoThumbnailFilePath(String videoPath){
+    public static String getVideoThumbnailFilePath(String videoPath) {
         return getBitmapFilePath(getVideoThumbnailBitmap(videoPath));
+    }
+
+    public static void changeEndpointIfNeeded(final Endpoint endpoint) {
+        ActivityMain.sNetworkApi.getHost("sia", new Callback<SingleResult<Host>>() {
+            @Override public void success(SingleResult<Host> hostSingleResult, Response response) {
+                String host = hostSingleResult.getItem().getHost();
+                if (!BASE_URL.equals(host)) {
+                    BASE_URL = host;
+                    endpoint.setUrl(BASE_URL);
+                }
+            }
+
+            @Override public void failure(RetrofitError error) {
+
+            }
+        });
+    }
+
+    public static void stopAndReleaseMediaPlayer(MediaPlayer mediaPlayer) {
+        if (mediaPlayer != null) {
+            if (mediaPlayer.isPlaying())
+                mediaPlayer.stop();
+            mediaPlayer.reset();
+            mediaPlayer.release();
+            mediaPlayer = null;
+        }
+    }
+
+    public enum FontFamily {
+        Naskh("Naskh"),
+        Default(Naskh.toString());
+
+        private String text;
+
+        FontFamily(String text) {
+            this.text = text;
+        }
+
+        @Override
+        public String toString() {
+            return text;
+        }
+    }
+
+    public enum FontWeight {
+        Bold("Bold"),
+        Regular("Regular");
+
+
+        private String text;
+
+        FontWeight(String text) {
+            this.text = text;
+        }
+
+        @Override
+        public String toString() {
+            return text;
+        }
     }
 }

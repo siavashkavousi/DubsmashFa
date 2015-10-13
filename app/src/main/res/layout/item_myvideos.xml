@@ -4,11 +4,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-    <ImageButton
-        android:id="@+id/item_image"
+    <VideoView
+        android:id="@+id/item_video"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:ignore="contentDescription"/>
+
+    <!--<ImageButton-->
+        <!--android:id="@+id/item_image"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--tools:ignore="contentDescription"/>-->
 
     <ProgressBar
         android:id="@+id/item_progress_bar"
