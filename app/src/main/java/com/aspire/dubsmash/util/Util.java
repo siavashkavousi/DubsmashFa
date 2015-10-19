@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.aspire.dubsmash.siavash.ActivityMain;
-import com.aspire.dubsmash.siavash.ApplicationBase;
 import com.aspire.dubsmash.siavash.Host;
 import com.aspire.dubsmash.siavash.SingleResult;
 import com.aspire.dubsmash.siavash.User;
@@ -290,8 +289,6 @@ public class Util {
         } else {
             observable.subscribe(observer);
         }
-
-        ApplicationBase.getRefWatcher(context).watch(observable);
     }
 
     public static void saveToFileSync(byte[] bytes, String path) {

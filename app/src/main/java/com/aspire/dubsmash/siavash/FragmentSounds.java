@@ -43,6 +43,7 @@ public class FragmentSounds extends Fragment {
         ButterKnife.bind(this, view);
         mSounds = new ArrayList<>();
         setUpSwitch();
+        if (isFirstRun) downloadInitialSounds();
         return view;
     }
 

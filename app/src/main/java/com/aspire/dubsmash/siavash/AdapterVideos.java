@@ -2,8 +2,6 @@ package com.aspire.dubsmash.siavash;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
@@ -18,6 +16,7 @@ import com.aspire.dubsmash.R;
 import com.aspire.dubsmash.util.Constants;
 import com.aspire.dubsmash.util.DatabaseUtil;
 import com.aspire.dubsmash.util.Util;
+import com.bumptech.glide.Glide;
 
 import java.io.File;
 import java.io.IOException;
@@ -64,8 +63,8 @@ public class AdapterVideos extends RecyclerView.Adapter<AdapterVideos.VideosView
     }
 
     public class VideosViewHolder extends RecyclerView.ViewHolder implements Observer {
-        @Bind(R.id.item_image) ImageButton mImageItem;
-        @Bind(R.id.item_progress_bar) ProgressBar mProgressBar;
+        @Bind(R.id.item_image) ImageButton imageItem;
+        @Bind(R.id.item_progress_bar) ProgressBar progressBar;
 
         private Video mVideo;
         private String mName = "video" + counter + ".mp4";
@@ -78,25 +77,15 @@ public class AdapterVideos extends RecyclerView.Adapter<AdapterVideos.VideosView
 
         private void bindViews(Video video) {
             mVideo = video;
-            ActivityMain.sNetworkApi.downloadSingleData(video.getVideoThumbnail(), new Callback<Response>() {
-                @Override public void success(Response response, Response response2) {
-                    try {
-                        Bitmap bitmap = BitmapFactory.decodeStream(response.getBody().in());
-                        mImageItem.setImageBitmap(bitmap);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override public void failure(RetrofitError error) {
-
-                }
-            });
+            Glide.with(mContext)
+                    .load(Util.BASE_URL + File.separator + video.getVideoThumbnail())
+                    .crossFade()
+                    .into(imageItem);
         }
 
         @OnClick(R.id.item_image) void onClick() {
-            mImageItem.setVisibility(View.INVISIBLE);
-            mProgressBar.setVisibility(View.VISIBLE);
+            imageItem.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
             RealmVideo video = containsVideoInDatabase();
             if (video == null) {
                 ActivityMain.sNetworkApi.downloadSingleData(mVideo.getVideoUrl(), new Callback<Response>() {
@@ -114,7 +103,7 @@ public class AdapterVideos extends RecyclerView.Adapter<AdapterVideos.VideosView
                     }
                 });
             } else {
-                mProgressBar.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
                 sendVideoIntent(mPath);
             }
         }
