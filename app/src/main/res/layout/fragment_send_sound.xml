@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/done"
+        android:padding="@dimen/activity_horizontal_margin">
+
+
+        <EditText
+            android:id="@+id/sound_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/play_panel"
+            android:layout_marginTop="@dimen/space_large"
+            android:ems="10"
+            android:gravity="end"
+            android:hint="عنوان صدا"
+            android:inputType="textPersonName"/>
+
+        <TextView
+            android:id="@+id/tags"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@+id/sound_title"
+            android:layout_marginTop="35dp"
+            android:text="تگ ها"
+            android:textAppearance="?android:attr/textAppearanceLarge"/>
+
+        <EditText
+            android:id="@+id/tags_input"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tags"
+            android:ems="10"
+            android:hint="تگ های مورد نظر را با فاصله از هم جدا کنید"
+            android:inputType="textMultiLine"/>
+
+        <RelativeLayout
+            android:id="@+id/play_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:padding="@dimen/space_large"
+            >
+
+            <ImageButton
+                android:id="@+id/play_pause"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:background="@null"
+                android:src="@drawable/play_big"/>
+
+            <SeekBar
+                android:id="@+id/progress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/space_medium"
+                android:layout_toRightOf="@+id/play_pause"
+                android:background="@drawable/wave2"
+                android:progressDrawable="@android:color/transparent"
+                android:thumb="@drawable/khat1"
+                android:thumbOffset="16dp"/>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/done"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_size"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/big_button_background"
+        android:text="تایید"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_size_large"/>
+</RelativeLayout>

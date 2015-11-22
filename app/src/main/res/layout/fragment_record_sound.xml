@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/record"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:orientation="vertical">
+
+        <ImageButton
+            android:id="@+id/mic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@null"
+            android:clickable="false"
+            android:src="@drawable/mic_off"/>
+
+        <TextView
+            android:id="@+id/start_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Start"
+            android:textColor="@color/mic_off"
+            android:textSize="30sp"/>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/record">
+
+        <TextView
+            android:id="@+id/tap_to_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:padding="@dimen/space_large"
+            android:text="@string/tap_to_record"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@color/grey_dark"/>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/record"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/space_medium"
+        android:text="10 sec."
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/mic_on"
+        android:visibility="gone"/>
+</RelativeLayout>

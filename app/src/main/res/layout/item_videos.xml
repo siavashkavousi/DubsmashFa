@@ -10,6 +10,11 @@
         android:layout_height="match_parent"
         tools:ignore="contentDescription"/>
 
+    <VideoView
+        android:id="@+id/item_video"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
     <ProgressBar
         android:id="@+id/item_progress_bar"
         style="?android:attr/progressBarStyleLarge"

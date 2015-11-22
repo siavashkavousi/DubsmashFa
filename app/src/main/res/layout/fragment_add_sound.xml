@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="40dp">
+
+        <Button
+            android:id="@+id/record"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/big_button_background"
+            android:drawableLeft="@drawable/mic"
+            android:gravity="center"
+            android:paddingBottom="@dimen/space_medium"
+            android:paddingLeft="40dp"
+            android:paddingRight="@dimen/space_medium"
+            android:paddingTop="@dimen/space_medium"
+            android:text="Record"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_large"/>
+
+        <Button
+            android:id="@+id/import_"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/record"
+            android:layout_marginTop="@dimen/space_medium"
+            android:background="@drawable/big_button_background"
+            android:drawableLeft="@drawable/import_"
+            android:gravity="center"
+            android:paddingBottom="@dimen/space_medium"
+            android:paddingLeft="40dp"
+            android:paddingRight="@dimen/space_medium"
+            android:paddingTop="@dimen/space_medium"
+            android:text="Record"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size_large"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

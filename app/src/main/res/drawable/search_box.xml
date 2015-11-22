@@ -4,9 +4,9 @@
     
     <corners android:radius="35dp"/>
     
-    <gradient android:startColor="@color/gray"
-        android:centerColor="@color/white"
-        android:endColor="@color/white"
+    <gradient android:startColor="@color/grey"
+        android:centerColor="@android:color/white"
+        android:endColor="@android:color/white"
         android:angle="-90" />
     
     <padding android:left="10dp"
