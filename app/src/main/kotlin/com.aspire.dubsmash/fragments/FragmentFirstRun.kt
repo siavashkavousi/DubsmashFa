@@ -11,10 +11,8 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Button
 import android.widget.EditText
 import com.aspire.dubsmash.R
-import com.aspire.dubsmash.util.bindView
-import com.aspire.dubsmash.util.isFirstRun
-import com.aspire.dubsmash.util.registerUser
-import com.aspire.dubsmash.util.setUserName
+import com.aspire.dubsmash.util.*
+import org.jetbrains.anko.act
 import org.jetbrains.anko.ctx
 import org.jetbrains.anko.onClick
 
@@ -24,6 +22,7 @@ import org.jetbrains.anko.onClick
 class FragmentFirstRun : Fragment() {
     private val done: Button by bindView(R.id.done)
     private val nameInput: EditText by bindView(R.id.editText)
+    private val callback: OnFragmentInteractionListener by lazy { act as OnFragmentInteractionListener }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_first_run, container, false)
@@ -43,17 +42,15 @@ class FragmentFirstRun : Fragment() {
         done.onClick {
             setUserName(ctx, nameInput.text.toString())
             registerUser(ctx)
-            isFirstRun(ctx)
-            //fixme start main activity
+            setIsFirstRun(ctx, false)
+            callback.switchFragmentTo(FragmentId.VIEW_PAGER)
         }
 
         nameInput.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                throw UnsupportedOperationException()
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                throw UnsupportedOperationException()
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {

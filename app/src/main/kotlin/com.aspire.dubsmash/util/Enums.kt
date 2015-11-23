@@ -12,6 +12,11 @@ enum class Font(val resourceId: String) {
     IRAN_NASTALIQ("Iran_nastaliq.ttf")
 }
 
-enum class FontWeight(name : String){
+enum class FontWeight(name: String) {
     BOLD("Bold"), REGULAR("Regular")
+}
+
+enum class FragmentId {
+    ADD_SOUND, CUT_SOUND, FIRST_RUN, MY_SOUNDS, MY_DUBS, PROCESS_DUB,
+    RECORD_SOUND, SEND_SOUND, SOUNDS, DUBS, VIEW_PAGER
 }

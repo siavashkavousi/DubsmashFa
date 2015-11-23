@@ -17,11 +17,10 @@ import org.jetbrains.anko.act
  * Created by sia on 11/21/15.
  */
 class FragmentViewPager : Fragment() {
+    private val viewPagerTab: SmartTabLayout by bindView(R.id.view_pager_tab)
+    private val viewPager: ViewPager by bindView(R.id.view_pager)
 
-    val viewPagerTab: SmartTabLayout by bindView(R.id.view_pager_tab)
-    val viewPager: ViewPager by bindView(R.id.view_pager)
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_view_pager, container, false)
     }
 
@@ -39,6 +38,7 @@ class FragmentViewPager : Fragment() {
         return FragmentPagerItemAdapter(
                 fragmentManager, FragmentPagerItems.with(act)
                 .add("صدا ها", FragmentSounds::class.java)
-                .add("داب ها", FragmentVideos::class.java).create())
+                .add("داب ها", FragmentVideos::class.java)
+                .create())
     }
 }

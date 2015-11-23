@@ -33,8 +33,8 @@ class FragmentSendSound : Fragment() {
     private val soundTitle: EditText by bindView(R.id.sound_title)
     private val tags: EditText by bindView(R.id.tags_input)
 
-    internal var audioPath: String
-    internal var finalSoundPath: String
+//    internal var audioPath: String
+//    internal var finalSoundPath: String
     internal var mediaPlayer: MediaPlayer? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -102,21 +102,20 @@ class FragmentSendSound : Fragment() {
     }
 
     private fun saveToMySounds() {
-        try {
-            val `in` = FileInputStream(audioPath)
-            finalSoundPath = Util.getNextSoundPath(soundTitle.text.toString().trim { it <= ' ' })
-            val out = FileOutputStream(finalSoundPath)
-            val buf = ByteArray(1024)
-            var len: Int
-            while ((len = `in`.read(buf)) > 0) {
-                out.write(buf, 0, len)
-            }
-            `in`.close()
-            out.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
+//        try {
+//            val `in` = FileInputStream(audioPath)
+//            finalSoundPath = Util.getNextSoundPath(soundTitle.text.toString().trim { it <= ' ' })
+//            val out = FileOutputStream(finalSoundPath)
+//            val buf = ByteArray(1024)
+//            var len: Int
+//            while ((len = `in`.read(buf)) > 0) {
+//                out.write(buf, 0, len)
+//            }
+//            `in`.close()
+//            out.close()
+//        } catch (e: Exception) {
+//            e.printStackTrace()
+//        }
     }
 
     //    private void addMetadata() {
@@ -134,28 +133,28 @@ class FragmentSendSound : Fragment() {
     //    }
 
     private fun startPlaying() {
-        playPause.setImageResource(R.drawable.pause_big)
-        mediaPlayer = MediaPlayer.create(this@ActivitySendSound, Uri.parse(audioPath))
-        mediaPlayer!!.start()
-        progressbar.max = mediaPlayer!!.duration
-        Thread(Runnable {
-            while (mediaPlayer != null) {
-                runOnUiThread {
-                    try {
-                        progressbar.progress = mediaPlayer!!.currentPosition
-                    } catch (e: Exception) {
-                        e.printStackTrace()
-                    }
-                }
-                try {
-                    Thread.sleep(100)
-                } catch (e: Exception) {
-                    e.printStackTrace()
-                }
-
-            }
-        }).start()
-        mediaPlayer!!.setOnCompletionListener { finishPlaying() }
+//        playPause.setImageResource(R.drawable.pause_big)
+//        mediaPlayer = MediaPlayer.create(this@ActivitySendSound, Uri.parse(audioPath))
+//        mediaPlayer!!.start()
+//        progressbar.max = mediaPlayer!!.duration
+//        Thread(Runnable {
+//            while (mediaPlayer != null) {
+//                runOnUiThread {
+//                    try {
+//                        progressbar.progress = mediaPlayer!!.currentPosition
+//                    } catch (e: Exception) {
+//                        e.printStackTrace()
+//                    }
+//                }
+//                try {
+//                    Thread.sleep(100)
+//                } catch (e: Exception) {
+//                    e.printStackTrace()
+//                }
+//
+//            }
+//        }).start()
+//        mediaPlayer!!.setOnCompletionListener { finishPlaying() }
     }
 
     private fun finishPlaying() {
@@ -167,19 +166,5 @@ class FragmentSendSound : Fragment() {
         mediaPlayer!!.release()
         mediaPlayer = null
         val c: Char?
-    }
-
-    private fun initConsViews() {
-        Util.setFont(this, Util.FontFamily.Default, Util.FontWeight.Bold, done, findViewById(R.id.title), findViewById(R.id.tags))
-        Util.setFont(this, Util.FontFamily.Default, Util.FontWeight.Regular, soundTitle, tags)
-        Util.setText(done, "تایید", findViewById(R.id.title), "ارسال صدا")
-    }
-
-    private fun initViews() {
-        done = findViewById(R.id.done) as Button
-        playPause = findViewById(R.id.play_pause) as ImageButton
-        progressbar = findViewById(R.id.progress) as SeekBar
-        soundTitle = findViewById(R.id.sound_title) as EditText
-        tags = findViewById(R.id.tags_input) as EditText
     }
 }

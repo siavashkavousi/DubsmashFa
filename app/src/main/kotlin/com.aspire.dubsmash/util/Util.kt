@@ -9,9 +9,9 @@ import android.graphics.Point
 import android.graphics.Typeface
 import android.media.MediaPlayer
 import android.os.Environment
+import com.aspire.dubsmash.ApplicationBase
 import com.aspire.dubsmash.R
 import com.aspire.dubsmash.ResettableCountDownLatch
-import com.aspire.dubsmash.siavash.ApplicationBase
 import com.aspire.dubsmash.siavash.util.NetworkService
 import org.jetbrains.anko.connectivityManager
 import retrofit.Callback
@@ -204,6 +204,10 @@ fun changeEndpointIfNeeded(baseUrl: BaseUrl) {
             throw UnsupportedOperationException()
         }
     })
+}
+
+fun fuck(){
+
 }
 
 fun doAsyncAndWait(ctx: Context, message: String, function: () -> Unit) {

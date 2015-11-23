@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ProgressBar
 import android.widget.VideoView
+import com.aspire.dubsmash.ApplicationBase
 import com.aspire.dubsmash.R
-import com.aspire.dubsmash.siavash.ApplicationBase
 import com.aspire.dubsmash.util.*
 import io.realm.Realm
 import org.jetbrains.anko.onClick

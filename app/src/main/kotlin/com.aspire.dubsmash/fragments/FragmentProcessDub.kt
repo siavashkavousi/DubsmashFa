@@ -22,7 +22,7 @@ import java.io.File
 import java.io.FileOutputStream
 
 /**
- * Created by sia on 11/22/15.
+ * Created by hojjat on 9/29/15 modified by sia on 11/22/15.
  */
 class FragmentProcessDub(val soundPath: String, val dubPath: String) : Fragment() {
     private val done: Button by bindView(R.id.done)

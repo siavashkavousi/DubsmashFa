@@ -30,7 +30,7 @@ class FragmentSounds : Fragment() {
     private var group = 0
     private val quantity = 15
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_sounds_videos, container, false)
     }
 
@@ -42,9 +42,7 @@ class FragmentSounds : Fragment() {
 
     override fun setUserVisibleHint(isVisibleToUser: Boolean) {
         super.setUserVisibleHint(isVisibleToUser)
-        if (isVisibleToUser && view != null) {
-            downloadInitialSounds()
-        }
+        if (isVisibleToUser && view != null) downloadInitialSounds()
     }
 
     private fun setUpSwitch() {
@@ -90,11 +88,11 @@ class FragmentSounds : Fragment() {
     }
 
     private fun downloadInitialSounds() {
-        if (switchLT.isChecked) {
+        if (switchLT.isChecked)
             downloadSounds(latest, group.toString(), quantity.toString())
-        } else {
+        else
             downloadSounds(trending, group.toString(), quantity.toString())
-        }
+
     }
 
     override fun onDetach() {

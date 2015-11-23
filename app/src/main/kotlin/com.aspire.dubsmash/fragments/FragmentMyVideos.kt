@@ -20,7 +20,7 @@ import java.io.File
 class FragmentMyVideos : Fragment() {
     val videosRecyclerView: RecyclerView by bindView(R.id.items_recycler_view)
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_my_sounds_videos, container, false)
     }
 

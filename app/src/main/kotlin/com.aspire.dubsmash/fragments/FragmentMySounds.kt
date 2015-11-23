@@ -25,7 +25,7 @@ class FragmentMySounds : Fragment() {
     private val soundsTitle: MutableList<String> = arrayListOf()
     private var adapter: AdapterMySounds? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_my_sounds_videos, container, false)
     }
 

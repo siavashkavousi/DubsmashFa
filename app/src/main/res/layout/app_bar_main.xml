@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,46 +14,10 @@
         android:gravity="end"
         android:theme="@style/AppTheme.AppBarOverlay">
 
-        <android.support.v7.widget.Toolbar
+        <com.aspire.dubsmash.util.Toolbar
             android:id="@+id/toolbar"
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/toolbar_size"
-            android:background="@color/primary"
-            android:elevation="2dp"
-            app:contentInsetStart="0dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="end|center_vertical"
-                android:orientation="horizontal">
-
-                <ImageButton
-                    android:id="@+id/toolbar_hamburger"
-                    android:layout_width="@dimen/toolbar_size"
-                    android:layout_height="@dimen/toolbar_size"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:background="@null"
-                    android:padding="8dp"
-                    android:src="@drawable/ic_hamburger"/>
-
-                <TextView
-                    android:id="@+id/toolbar_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@+id/toolbar_hamburger"
-                    android:layout_toStartOf="@+id/toolbar_hamburger"
-                    android:text="@string/app_name"
-                    android:textColor="@android:color/white"
-                    android:textSize="20sp"/>
-
-            </RelativeLayout>
-        </android.support.v7.widget.Toolbar>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
     </android.support.design.widget.AppBarLayout>
 
