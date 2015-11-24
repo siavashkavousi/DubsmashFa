@@ -1,5 +1,6 @@
 package com.aspire.dubsmash.adapters
 
+import android.app.Activity
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,7 @@ import android.widget.ProgressBar
 import android.widget.VideoView
 import com.aspire.dubsmash.ApplicationBase
 import com.aspire.dubsmash.R
+import com.aspire.dubsmash.fragments.OnFragmentInteractionListener
 import com.aspire.dubsmash.util.*
 import io.realm.Realm
 import org.jetbrains.anko.onClick
@@ -18,8 +20,9 @@ import java.io.FileOutputStream
 /**
  * Created by sia on 11/20/15.
  */
-class AdapterVideos(private var videos: List<Video>) : RecyclerView.Adapter<AdapterVideos.VideosViewHolder>() {
+class AdapterVideos(private val act: Activity, private var videos: List<Video>) : RecyclerView.Adapter<AdapterVideos.VideosViewHolder>() {
     private var counter = 0
+    private val callback: OnFragmentInteractionListener by lazy { act as OnFragmentInteractionListener }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VideosViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_videos, parent, false)

@@ -38,7 +38,7 @@ class FragmentMySounds : Fragment() {
 
     private fun setUpRecyclerView() {
         mSoundsRecyclerView.layoutManager = LinearLayoutManager(act)
-        adapter = AdapterMySounds(soundsPath, soundsTitle)
+        adapter = AdapterMySounds(act, soundsPath, soundsTitle)
         mSoundsRecyclerView.adapter = adapter
     }
 

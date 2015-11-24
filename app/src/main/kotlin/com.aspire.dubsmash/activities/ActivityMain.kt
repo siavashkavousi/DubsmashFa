@@ -27,10 +27,10 @@ class ActivityMain : AppCompatActivity(),
         toolbar.defaultHamburgerAction(drawer)
         toolbar.defaultTitleStyle()
 
-        if (isFirstRun(this))
-            switchFragmentTo(FragmentId.FIRST_RUN)
-        else
-            switchFragmentTo(FragmentId.VIEW_PAGER)
+//        if (isFirstRun(this))
+//            switchFragmentTo(FragmentId.FIRST_RUN)
+//        else
+//            switchFragmentTo(FragmentId.VIEW_PAGER)
 
         registerUserIfNeeded(this)
         createDirectories()

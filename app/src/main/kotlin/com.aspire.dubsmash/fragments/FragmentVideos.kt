@@ -12,6 +12,7 @@ import com.aspire.dubsmash.EndlessRecyclerOnScrollListener
 import com.aspire.dubsmash.R
 import com.aspire.dubsmash.adapters.AdapterVideos
 import com.aspire.dubsmash.util.*
+import org.jetbrains.anko.act
 import org.jetbrains.anko.ctx
 import retrofit.Callback
 import retrofit.Response
@@ -56,7 +57,7 @@ class FragmentVideos : Fragment() {
     private fun setUpRecyclerView() {
         val linearLayoutManager = LinearLayoutManager(ctx)
         videosRecyclerView.layoutManager = linearLayoutManager
-        adapter = AdapterVideos(videos)
+        adapter = AdapterVideos(act, videos)
         videosRecyclerView.adapter = adapter
         videosRecyclerView.addOnScrollListener(object : EndlessRecyclerOnScrollListener<LinearLayoutManager>(linearLayoutManager) {
             override fun onLoadMore(currentPage: Int) {

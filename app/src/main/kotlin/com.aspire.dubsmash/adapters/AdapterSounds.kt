@@ -1,5 +1,6 @@
 package com.aspire.dubsmash.adapters
 
+import android.app.Activity
 import android.app.ProgressDialog
 import android.media.MediaPlayer
 import android.net.Uri
@@ -12,6 +13,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.aspire.dubsmash.R
+import com.aspire.dubsmash.fragments.OnFragmentInteractionListener
 import com.aspire.dubsmash.util.*
 import com.squareup.okhttp.Response
 import retrofit.Callback
@@ -21,10 +23,11 @@ import java.io.FileOutputStream
 /**
  * Created by sia on 11/20/15.
  */
-class AdapterSounds(private var sounds: List<Sound>) : RecyclerView.Adapter<AdapterSounds.SoundsViewHolder>() {
+class AdapterSounds(private val act: Activity, private var sounds: List<Sound>) : RecyclerView.Adapter<AdapterSounds.SoundsViewHolder>() {
     private var isPlaying: Boolean = false
     private var playingSoundButton: ImageButton? = null
     var mediaPlayer: MediaPlayer? = null
+    private val callback: OnFragmentInteractionListener by lazy { act as OnFragmentInteractionListener }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SoundsViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_sounds, parent, false)
@@ -134,15 +137,14 @@ class AdapterSounds(private var sounds: List<Sound>) : RecyclerView.Adapter<Adap
                     override fun onResponse(response: retrofit.Response<Response>, retrofit: Retrofit?) {
                         progressDialog.dismiss()
                         FileOutputStream(tempSoundPath).write(response.body().body().bytes())
-                        //fixme hojjat act
-                        //                        context.startActivity<MainActivity>(soundPath to tempSoundPath, videoPath to notAssigned)
+                        //fixme arguments which should be sent to record dub fragment
+                        callback.switchFragmentTo(FragmentId.RECORD_DUB)
                     }
 
                     override fun onFailure(t: Throwable?) {
                         progressDialog.dismiss()
                         Toast.makeText(context, "خطا", Toast.LENGTH_SHORT).show()
                     }
-
                 })
             }
         }

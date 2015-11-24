@@ -12,6 +12,7 @@ import com.aspire.dubsmash.EndlessRecyclerOnScrollListener
 import com.aspire.dubsmash.R
 import com.aspire.dubsmash.adapters.AdapterSounds
 import com.aspire.dubsmash.util.*
+import org.jetbrains.anko.act
 import org.jetbrains.anko.ctx
 import retrofit.Callback
 import retrofit.Response
@@ -55,7 +56,7 @@ class FragmentSounds : Fragment() {
         isFirstRun = false
         val linearLayoutManager = LinearLayoutManager(ctx)
         soundsRecyclerView.layoutManager = linearLayoutManager
-        adapter = AdapterSounds(sounds)
+        adapter = AdapterSounds(act, sounds)
         soundsRecyclerView.adapter = adapter
         soundsRecyclerView.addOnScrollListener(object : EndlessRecyclerOnScrollListener<LinearLayoutManager>(linearLayoutManager) {
             override fun onLoadMore(currentPage: Int) {

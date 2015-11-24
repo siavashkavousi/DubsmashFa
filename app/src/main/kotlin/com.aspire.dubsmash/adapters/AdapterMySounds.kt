@@ -1,5 +1,6 @@
 package com.aspire.dubsmash.adapters
 
+import android.app.Activity
 import android.media.MediaPlayer
 import android.net.Uri
 import android.support.v7.widget.RecyclerView
@@ -10,16 +11,19 @@ import android.widget.ImageButton
 import android.widget.RelativeLayout
 import android.widget.TextView
 import com.aspire.dubsmash.R
-import com.aspire.dubsmash.util.*
-import org.jetbrains.anko.startActivity
+import com.aspire.dubsmash.fragments.OnFragmentInteractionListener
+import com.aspire.dubsmash.util.FragmentId
+import com.aspire.dubsmash.util.bindView
+import com.aspire.dubsmash.util.stopAndReleaseMediaPlayer
 
 /**
  * Created by sia on 11/19/15.
  */
-class AdapterMySounds(private val soundsPath: List<String>, private val soundsTitle: List<String>) : RecyclerView.Adapter<AdapterMySounds.SoundsViewHolder>() {
+class AdapterMySounds(private val act: Activity, private val soundsPath: List<String>, private val soundsTitle: List<String>) : RecyclerView.Adapter<AdapterMySounds.SoundsViewHolder>() {
     private var isPlaying: Boolean = false
     private var playingSoundButton: ImageButton? = null
     var mediaPlayer: MediaPlayer? = null
+    private val callback: OnFragmentInteractionListener by lazy { act as OnFragmentInteractionListener }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SoundsViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_mysounds, parent, false)
@@ -77,8 +81,8 @@ class AdapterMySounds(private val soundsPath: List<String>, private val soundsTi
                     }
                 }
             } else if (id == item.id) {
-                //fixme hojjat act
-//                itemView.context.startActivity<MainActivity>(soundPath to path, videoPath to notAssigned)
+                //fixme arguments which should be sent to record dub fragment
+                callback.switchFragmentTo(FragmentId.RECORD_DUB)
             }
         }
     }
