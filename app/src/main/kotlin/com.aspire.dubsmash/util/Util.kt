@@ -201,13 +201,8 @@ fun changeEndpointIfNeeded(baseUrl: BaseUrl) {
         }
 
         override fun onFailure(t: Throwable?) {
-            throw UnsupportedOperationException()
         }
     })
-}
-
-fun fuck(){
-
 }
 
 fun doAsyncAndWait(ctx: Context, message: String, function: () -> Unit) {

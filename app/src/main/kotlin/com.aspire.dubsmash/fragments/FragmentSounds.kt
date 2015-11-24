@@ -12,7 +12,7 @@ import com.aspire.dubsmash.EndlessRecyclerOnScrollListener
 import com.aspire.dubsmash.R
 import com.aspire.dubsmash.adapters.AdapterSounds
 import com.aspire.dubsmash.util.*
-import org.jetbrains.anko.act
+import org.jetbrains.anko.ctx
 import retrofit.Callback
 import retrofit.Response
 import retrofit.Retrofit
@@ -53,19 +53,16 @@ class FragmentSounds : Fragment() {
 
     private fun setUpRecyclerView() {
         isFirstRun = false
-        val linearLayoutManager = LinearLayoutManager(act)
+        val linearLayoutManager = LinearLayoutManager(ctx)
         soundsRecyclerView.layoutManager = linearLayoutManager
         adapter = AdapterSounds(sounds)
         soundsRecyclerView.adapter = adapter
-        //fixme space item decoration should be added
-        //        mSoundsRecyclerView.addItemDecoration(SpacesItemDecoration(Constants.RECYCLE_VIEW_SPACE))
         soundsRecyclerView.addOnScrollListener(object : EndlessRecyclerOnScrollListener<LinearLayoutManager>(linearLayoutManager) {
             override fun onLoadMore(currentPage: Int) {
-                if (switchLT.isChecked) {
+                if (switchLT.isChecked)
                     downloadSounds(latest, (++group).toString(), quantity.toString())
-                } else {
+                else
                     downloadSounds(trending, (++group).toString(), quantity.toString())
-                }
             }
         })
     }
