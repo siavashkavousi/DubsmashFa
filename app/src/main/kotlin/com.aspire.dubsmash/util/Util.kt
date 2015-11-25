@@ -229,3 +229,13 @@ fun getDisplaySize(activity: Activity): Point {
     activity.windowManager.defaultDisplay.getSize(p)
     return p
 }
+
+fun generateSoundFile(title: String): File {
+    val file = File(mySoundsPath + File.separator + title + ".m4a")
+    if (file.exists()) duplicateName()
+    return file
+}
+
+fun duplicateName() {
+
+}

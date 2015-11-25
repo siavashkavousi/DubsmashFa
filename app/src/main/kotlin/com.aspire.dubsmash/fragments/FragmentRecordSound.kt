@@ -10,10 +10,13 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.aspire.dubsmash.R
+import com.aspire.dubsmash.util.FragmentId
 import com.aspire.dubsmash.util.bindView
 import com.aspire.dubsmash.util.executor
+import com.aspire.dubsmash.util.tempSoundPath
+import org.jetbrains.anko.act
 import org.jetbrains.anko.onClick
-import java.io.IOException
+import org.jetbrains.anko.onUiThread
 
 /**
  * Created by hojjat on 9/30/15 modified by sia on 11/22/15.
@@ -25,8 +28,9 @@ class FragmentRecordSound : Fragment() {
     private val mic: ImageButton by bindView(R.id.mic)
     private val startDone: TextView by bindView(R.id.start_done)
 
-    private var mediaRecorder: MediaRecorder? = null
+    private val callback: OnFragmentInteractionListener by lazy { act as OnFragmentInteractionListener }
 
+    private lateinit var mediaRecorder: MediaRecorder
     private var recording: Boolean = false
     private var recordingStartTime: Long = 0
     private var length: Long = 0
@@ -37,12 +41,22 @@ class FragmentRecordSound : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        setViewsStyle()
         setListeners()
     }
 
-    private fun setViewsStyle() {
+    private fun startRecordingViewsStyle() {
+        mic.setImageResource(R.drawable.mic_off)
+        startDone.setTextColor(resources.getColor(R.color.mic_off))
+        tapToStart.text = "شروع را لمس کنید تا ضبط صدا آغاز شود"
+        startDone.text = "شروع"
+    }
 
+    private fun stopRecordingViewsStyle() {
+        mic.setImageResource(R.drawable.mic_on)
+        startDone.setTextColor(resources.getColor(R.color.mic_on))
+        startDone.text = "تمام"
+        tapToStart.text = "برای پایان ضبط تمام را لمس کنید"
+        timer.visibility = View.VISIBLE
     }
 
     private fun setListeners() {
@@ -56,62 +70,55 @@ class FragmentRecordSound : Fragment() {
     }
 
     private fun startRecording() {
-        mic.setImageResource(R.drawable.mic_on)
-        timer.visibility = View.VISIBLE
-        startDone.text = "تمام"
-        tapToStart.text = "برای پایان ضبط تمام را لمس کنید"
-        startDone.setTextColor(resources.getColor(R.color.mic_on))
-        recordingStartTime = System.currentTimeMillis()
         recording = true
-        mediaRecorder?.start()
+        stopRecordingViewsStyle()
+        recordingStartTime = System.currentTimeMillis()
+        mediaRecorder.start()
         executor.execute {
-            //fixme if problem
-//            if ((length = System.currentTimeMillis() - recordingStartTime) < 10 * 1000) {
-//                timer.text = "%.1f".format((10000 - length) / 1000.toFloat()) + " ثانیه"
-//            } else {
-//                finishRecording()
-//            }
-//            Thread.sleep(100)
+            while (recording) {
+                length = System.currentTimeMillis() - recordingStartTime
+                if (length < 10 * 1000) {
+                    onUiThread { timer.text = "%.1f".format((10000 - length) / 1000.toFloat()) + " ثانیه" }
+                } else {
+                    finishRecording()
+                }
+
+                Thread.sleep(100)
+            }
         }
     }
 
     private fun finishRecording() {
-        recording = false
-        mediaRecorder!!.stop()
-        mediaRecorder!!.reset()
-        mediaRecorder!!.release()
-        mediaRecorder = null
-        //fixme
-        //        startActivity(new Intent(this, ActivityRecordDub.class));
-        //        val intent = Intent(this, ActivitySendSound::class.java)
-        //        intent.putExtra(Constants.SOUND_PATH, resultSoundPath)
-        //        startActivity(intent)
-        //        finish()
+        stopAndReleaseMediaRecorder()
+        callback.switchFragmentTo(FragmentId.SEND_SOUND)
     }
 
-    private fun initRecorder() {
-        mediaRecorder = MediaRecorder()
-        mediaRecorder!!.setAudioSource(MediaRecorder.AudioSource.MIC)
-        mediaRecorder!!.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-        mediaRecorder!!.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-        mediaRecorder!!.setAudioEncodingBitRate(99999999)
-        mediaRecorder!!.setAudioSamplingRate(99999999)
-        //fixme hheheh
-        //        mediaRecorder!!.setOutputFile(resultSoundPath)
-        try {
-            mediaRecorder!!.prepare()
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
+    private fun stopAndReleaseMediaRecorder() {
+        recording = false
+        mediaRecorder.stop()
+        mediaRecorder.reset()
+        mediaRecorder.release()
+    }
 
+    private fun setUpRecorder() {
+        mediaRecorder = MediaRecorder()
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+        mediaRecorder.setAudioEncodingBitRate(99999999)
+        mediaRecorder.setAudioSamplingRate(99999999)
+        mediaRecorder.setOutputFile(tempSoundPath)
+        mediaRecorder.prepare()
     }
 
     override fun onResume() {
         super.onResume()
-        initRecorder()
-        mic.setImageResource(R.drawable.mic_off)
-        startDone.setTextColor(resources.getColor(R.color.mic_off))
-        tapToStart.text = "شروع را لمس کنید تا ضبط صدا آغاز شود"
-        startDone.text = "شروع"
+        setUpRecorder()
+        startRecordingViewsStyle()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopAndReleaseMediaRecorder()
     }
 }
