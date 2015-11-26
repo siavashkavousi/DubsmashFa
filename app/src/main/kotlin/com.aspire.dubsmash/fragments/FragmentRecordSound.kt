@@ -29,8 +29,8 @@ class FragmentRecordSound : Fragment() {
     private val startDone: TextView by bindView(R.id.start_done)
 
     private val callback: OnFragmentInteractionListener by lazy { act as OnFragmentInteractionListener }
+    private val mediaRecorder = MediaRecorder()
 
-    private lateinit var mediaRecorder: MediaRecorder
     private var recording: Boolean = false
     private var recordingStartTime: Long = 0
     private var length: Long = 0
@@ -44,14 +44,15 @@ class FragmentRecordSound : Fragment() {
         setListeners()
     }
 
-    private fun startRecordingViewsStyle() {
+    private fun stopRecordingViewsStyle() {
         mic.setImageResource(R.drawable.mic_off)
         startDone.setTextColor(resources.getColor(R.color.mic_off))
         tapToStart.text = "شروع را لمس کنید تا ضبط صدا آغاز شود"
         startDone.text = "شروع"
+        timer.visibility = View.INVISIBLE
     }
 
-    private fun stopRecordingViewsStyle() {
+    private fun startRecordingViewsStyle() {
         mic.setImageResource(R.drawable.mic_on)
         startDone.setTextColor(resources.getColor(R.color.mic_on))
         startDone.text = "تمام"
@@ -71,17 +72,17 @@ class FragmentRecordSound : Fragment() {
 
     private fun startRecording() {
         recording = true
-        stopRecordingViewsStyle()
+        startRecordingViewsStyle()
         recordingStartTime = System.currentTimeMillis()
-        mediaRecorder.start()
         executor.execute {
+            mediaRecorder.setUp()
+            mediaRecorder.start()
             while (recording) {
                 length = System.currentTimeMillis() - recordingStartTime
-                if (length < 10 * 1000) {
+                if (length < 10 * 1000)
                     onUiThread { timer.text = "%.1f".format((10000 - length) / 1000.toFloat()) + " ثانیه" }
-                } else {
+                else
                     finishRecording()
-                }
 
                 Thread.sleep(100)
             }
@@ -94,31 +95,38 @@ class FragmentRecordSound : Fragment() {
     }
 
     private fun stopAndReleaseMediaRecorder() {
-        recording = false
-        mediaRecorder.stop()
-        mediaRecorder.reset()
+        stopAndResetMediaRecorder()
         mediaRecorder.release()
     }
 
-    private fun setUpRecorder() {
-        mediaRecorder = MediaRecorder()
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-        mediaRecorder.setAudioEncodingBitRate(99999999)
-        mediaRecorder.setAudioSamplingRate(99999999)
-        mediaRecorder.setOutputFile(tempSoundPath)
-        mediaRecorder.prepare()
+    private fun stopAndResetMediaRecorder() {
+        if (recording) mediaRecorder.stop()
+        mediaRecorder.reset()
+        recording = false
+    }
+
+    private fun MediaRecorder.setUp() {
+        this.setAudioSource(MediaRecorder.AudioSource.MIC)
+        this.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+        this.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+        this.setAudioEncodingBitRate(99999999)
+        this.setAudioSamplingRate(99999999)
+        this.setOutputFile(tempSoundPath)
+        this.prepare()
     }
 
     override fun onResume() {
         super.onResume()
-        setUpRecorder()
-        startRecordingViewsStyle()
+        stopRecordingViewsStyle()
     }
 
     override fun onPause() {
         super.onPause()
+        stopAndResetMediaRecorder()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
         stopAndReleaseMediaRecorder()
     }
 }
