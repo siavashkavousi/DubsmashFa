@@ -12,6 +12,7 @@ import android.os.Environment
 import com.aspire.dubsmash.ApplicationBase
 import com.aspire.dubsmash.R
 import com.aspire.dubsmash.ResettableCountDownLatch
+import com.aspire.dubsmash.fragments.FragmentRecordSound
 import com.aspire.dubsmash.siavash.util.NetworkService
 import org.jetbrains.anko.connectivityManager
 import retrofit.Callback
@@ -44,16 +45,7 @@ val tempSoundPath = tempPath + "/tempSound.m4a"
 val tempVideoPath = tempPath + "/tempVideo.mp4"
 val tempThumbnailPath = tempPath + "/tempThumbnail.png"
 
-// fragments
-val whichFragment = "whichFragment"
-val viewPagerFragment = "viewPagerFragment"
-val soundsFragment = "soundsFragment"
-val videosFragment = "videosFragment"
-val mySoundsFragment = "mySoundsFragment"
-val myVideosFragment = "myVideosFragment"
-val downloadFragment = "downloadFragment"
-
-val soundPath = "SOUND_PATH"
+val SOUND_PATH = "SOUND_PATH"
 val videoPath = "DUB_PATH"
 val notAssigned = "NOT_ASSIGNED"
 val unknown = "unknown"
@@ -63,11 +55,13 @@ val latest = "latest"
 val trending = "trending"
 
 // thread pool and thread related vars
-val executor = Executors.newFixedThreadPool(3)
+private val coreCount = Runtime.getRuntime().availableProcessors()
+val executor = Executors.newFixedThreadPool(coreCount + 1)
 val signalToPlayVideo = ResettableCountDownLatch(1)
 
 val fileMaxLength = 10 * 1000
 val fileMinLength = 1 * 1000
+val recyclerViewSpace = 2
 
 fun getAppMainFont(context: Context): Typeface {
     return getFont(context, Font.AFSANEH)
@@ -179,15 +173,19 @@ fun createDirectories() {
         f.mkdirs()
 }
 
-fun stopAndReleaseMediaPlayer(mediaPlayer: MediaPlayer?) {
-    var mp = mediaPlayer
-    if (mp != null) {
-        if (mp.isPlaying)
-            mp.stop()
-        mp.reset()
-        mp.release()
-        mp = null
-    }
+fun MediaPlayer.stopAndRelease() {
+    stopAndReset()
+    release()
+}
+
+fun MediaPlayer.stopAndReset() {
+    if (isPlaying) stop()
+    reset()
+}
+
+fun stopNReset(mediaPlayer: MediaPlayer){
+    if(mediaPlayer.isPlaying) mediaPlayer.stop()
+    mediaPlayer.reset()
 }
 
 fun changeEndpointIfNeeded(baseUrl: BaseUrl) {
@@ -205,12 +203,18 @@ fun changeEndpointIfNeeded(baseUrl: BaseUrl) {
     })
 }
 
-fun doAsyncAndWait(ctx: Context, message: String, function: () -> Unit) {
+fun doAsync(function: () -> Unit) {
+    executor.execute {
+        function()
+    }
+}
+
+fun doAsyncAndWait(ctx: Context, message: String, function: FragmentRecordSound.() -> Unit) {
     val progressDialog = ProgressDialog(ctx)
     progressDialog.setMessage("در حال پردازش داب شما!")
     progressDialog.setCancelable(false)
     progressDialog.show()
-    executor.execute { function() }
+    executor.execute { FragmentRecordSound().function() }
     progressDialog.dismiss()
 }
 
@@ -238,4 +242,21 @@ fun generateSoundFile(title: String): File {
 
 fun duplicateName() {
 
+}
+
+/**
+ * Returns the index of the smallest element or `null` if there are no elements.
+ */
+fun FloatArray.minElementIndex(): Int? {
+    if (isEmpty()) return null
+    var minIndex = 0
+    var min = this[0]
+    for (i in 1..lastIndex) {
+        val e = this[i]
+        if (min > e) {
+            minIndex = i
+            min = e
+        }
+    }
+    return minIndex
 }

@@ -95,6 +95,6 @@ class FragmentSounds : Fragment() {
 
     override fun onDetach() {
         super.onDetach()
-        stopAndReleaseMediaPlayer(adapter?.mediaPlayer)
+        adapter?.mediaPlayer?.stopAndRelease()
     }
 }

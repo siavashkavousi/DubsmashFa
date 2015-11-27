@@ -14,16 +14,17 @@ import com.aspire.dubsmash.R
 import com.aspire.dubsmash.fragments.OnFragmentInteractionListener
 import com.aspire.dubsmash.util.FragmentId
 import com.aspire.dubsmash.util.bindView
-import com.aspire.dubsmash.util.stopAndReleaseMediaPlayer
+import com.aspire.dubsmash.util.stopAndRelease
 
 /**
  * Created by sia on 11/19/15.
  */
 class AdapterMySounds(private val act: Activity, private val soundsPath: List<String>, private val soundsTitle: List<String>) : RecyclerView.Adapter<AdapterMySounds.SoundsViewHolder>() {
+    private val callback: OnFragmentInteractionListener by lazy { act as OnFragmentInteractionListener }
+
     private var isPlaying: Boolean = false
     private var playingSoundButton: ImageButton? = null
     var mediaPlayer: MediaPlayer? = null
-    private val callback: OnFragmentInteractionListener by lazy { act as OnFragmentInteractionListener }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SoundsViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_mysounds, parent, false)
@@ -35,10 +36,11 @@ class AdapterMySounds(private val act: Activity, private val soundsPath: List<St
     override fun getItemCount(): Int = soundsPath.size
 
     inner class SoundsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        val item: RelativeLayout by bindView(R.id.item)
-        val title: TextView by bindView(R.id.title)
-        val playSound: ImageButton by bindView(R.id.play_sound)
-        lateinit private var path: String
+        private val item: RelativeLayout by bindView(R.id.item)
+        private val title: TextView by bindView(R.id.title)
+        private val playSound: ImageButton by bindView(R.id.play_sound)
+
+        private lateinit var path: String
 
         init {
             setListeners()
@@ -58,7 +60,7 @@ class AdapterMySounds(private val act: Activity, private val soundsPath: List<St
             val id = v.id
             if (id == playSound.id) {
                 if (isPlaying) {
-                    stopAndReleaseMediaPlayer(mediaPlayer)
+                    mediaPlayer?.stopAndRelease()
                     playingSoundButton?.setImageResource(R.drawable.ic_play)
                     playingSoundButton = playSound
                     playSound.setImageResource(R.drawable.download)
@@ -81,8 +83,7 @@ class AdapterMySounds(private val act: Activity, private val soundsPath: List<St
                     }
                 }
             } else if (id == item.id) {
-                //fixme arguments which should be sent to record dub fragment
-                callback.switchFragmentTo(FragmentId.RECORD_DUB)
+                callback.switchFragmentTo(FragmentId.RECORD_DUB, path)
             }
         }
     }

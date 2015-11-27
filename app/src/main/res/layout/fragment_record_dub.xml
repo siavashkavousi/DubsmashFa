@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <SeekBar
+        android:id="@+id/seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/space_medium"
+        android:background="@drawable/wave2"
+        android:progressDrawable="@android:color/transparent"
+        android:thumb="@drawable/khat1"/>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <SurfaceView
+            android:id="@+id/surface_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/space_medium"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/switch_camera"
+            android:src="@android:drawable/ic_menu_camera"
+            android:background="@null"
+            android:layout_margin="@dimen/space_medium"
+            android:layout_gravity="end|top"/>
+    </FrameLayout>
+
+    <ToggleButton
+        android:id="@+id/toggle_recording"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/toolbar_size"
+        android:background="@drawable/big_button_background"
+        android:gravity="center"
+        android:textColor="@android:color/white"
+        android:textOff="شروع"
+        android:textOn="لغو کردن"
+        android:textSize="@dimen/text_size_xlarge"/>
+</LinearLayout>

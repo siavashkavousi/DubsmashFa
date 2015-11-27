@@ -28,8 +28,7 @@ class FragmentSendSound : Fragment() {
 
     private val finalSoundFile: File by lazy { generateSoundFile(soundTitle.text.toString().trim { it <= ' ' }) }
     private val callback: OnFragmentInteractionListener by lazy { act as OnFragmentInteractionListener }
-
-    private lateinit var mediaPlayer: MediaPlayer
+    private val mediaPlayer: MediaPlayer by lazy { MediaPlayer.create(ctx, Uri.parse(tempSoundPath)) }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_send_sound, container, false)
@@ -63,6 +62,7 @@ class FragmentSendSound : Fragment() {
                     saveToMySounds()
                     sendSoundToServer()
                 }
+                mediaPlayer.stopAndReset()
                 callback.switchFragmentTo(FragmentId.MY_SOUNDS, finalSoundFile.absolutePath)
             } else Toast.makeText(ctx, "عنوان صدا را وارد کنید!", Toast.LENGTH_SHORT).show()
         }
@@ -80,7 +80,6 @@ class FragmentSendSound : Fragment() {
 
     private fun startPlaying() {
         playPause.setImageResource(R.drawable.pause_big)
-        mediaPlayer = MediaPlayer.create(ctx, Uri.parse(tempSoundPath))
         mediaPlayer.start()
         seekBar.max = mediaPlayer.duration
         executor.execute {
@@ -95,14 +94,17 @@ class FragmentSendSound : Fragment() {
     private fun finishPlaying() {
         playPause.setImageResource(R.drawable.play_big)
         seekBar.progress = 0
-        if (mediaPlayer.isPlaying)
-            mediaPlayer.stop()
-        mediaPlayer.reset()
-        mediaPlayer.release()
+        mediaPlayer.stopAndReset()
     }
 
     override fun onPause() {
         super.onPause()
         finishPlaying()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        finishPlaying()
+        mediaPlayer.stopAndRelease()
     }
 }

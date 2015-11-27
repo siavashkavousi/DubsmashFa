@@ -20,3 +20,7 @@ enum class FragmentId {
     ADD_SOUND, CUT_SOUND, FIRST_RUN, MY_SOUNDS, MY_DUBS, PROCESS_DUB,
     RECORD_SOUND, SEND_SOUND, SOUNDS, DUBS, VIEW_PAGER, RECORD_DUB
 }
+
+enum class CameraId(val id: Int) {
+    BACK(0), FRONT(1)
+}

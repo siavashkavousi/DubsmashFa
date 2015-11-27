@@ -9,6 +9,7 @@ import android.view.MenuItem
 import com.aspire.dubsmash.R
 import com.aspire.dubsmash.fragments.*
 import com.aspire.dubsmash.util.*
+import org.jetbrains.anko.withArguments
 
 /**
  * Created by sia on 11/18/15.
@@ -27,38 +28,31 @@ class ActivityMain : AppCompatActivity(),
         toolbar.defaultHamburgerAction(drawer)
         toolbar.defaultTitleStyle()
 
-//        if (isFirstRun(this))
-//            switchFragmentTo(FragmentId.FIRST_RUN)
-//        else
-//            switchFragmentTo(FragmentId.VIEW_PAGER)
+        switchFragmentTo(FragmentId.MY_SOUNDS)
 
-        registerUserIfNeeded(this)
-        createDirectories()
+        //        if (isFirstRun(this))
+        //            switchFragmentTo(FragmentId.FIRST_RUN)
+        //        else
+        //            switchFragmentTo(FragmentId.VIEW_PAGER)
+
+        //        registerUserIfNeeded(this)
+        //        createDirectories()
     }
 
     override fun switchFragmentTo(fragmentId: FragmentId, vararg values: String) {
-        if (fragmentId.equals(FragmentId.VIEW_PAGER))
-            fragmentManager.replaceFragment(FragmentViewPager())
-        else if (fragmentId.equals(FragmentId.SOUNDS)) {
-            fragmentManager.replaceFragment(FragmentSounds())
-        } else if (fragmentId.equals(FragmentId.DUBS)) {
-            fragmentManager.replaceFragment(FragmentVideos())
-        } else if (fragmentId.equals(FragmentId.MY_SOUNDS)) {
-            fragmentManager.replaceFragment(FragmentMySounds())
-        } else if (fragmentId.equals(FragmentId.MY_DUBS)) {
-            fragmentManager.replaceFragment(FragmentMyVideos())
-        } else if (fragmentId.equals(FragmentId.FIRST_RUN)) {
-            fragmentManager.replaceFragment(FragmentFirstRun())
-        } else if (fragmentId.equals(FragmentId.ADD_SOUND)) {
-            fragmentManager.replaceFragment(FragmentAddSound())
-//        } else if (fragmentId.equals(FragmentId.CUT_SOUND)) {
-//            fragmentManager.replaceFragment(FragmentCutSound())
-//        } else if (fragmentId.equals(FragmentId.PROCESS_DUB)) {
-//            fragmentManager.replaceFragment(FragmentProcessDub())
-        } else if (fragmentId.equals(FragmentId.RECORD_SOUND)) {
-            fragmentManager.replaceFragment(FragmentRecordSound())
-        } else if (fragmentId.equals(FragmentId.SEND_SOUND)) {
-            fragmentManager.replaceFragment(FragmentSendSound())
+        when (fragmentId) {
+            FragmentId.VIEW_PAGER -> fragmentManager.replaceFragment(FragmentViewPager())
+            FragmentId.ADD_SOUND -> fragmentManager.replaceFragment(FragmentAddSound())
+        //            FragmentId.CUT_SOUND ->fragmentManager.replaceFragment(FragmentCutSound())
+            FragmentId.FIRST_RUN -> fragmentManager.replaceFragment(FragmentFirstRun())
+            FragmentId.MY_SOUNDS -> fragmentManager.replaceFragment(FragmentMySounds())
+            FragmentId.MY_DUBS -> fragmentManager.replaceFragment(FragmentMyVideos())
+        //            FragmentId.PROCESS_DUB->fragmentManager.replaceFragment(FragmentProcessDub())
+            FragmentId.RECORD_DUB -> fragmentManager.replaceFragment(FragmentRecordDub().withArguments(SOUND_PATH to values[0]))
+            FragmentId.RECORD_SOUND -> fragmentManager.replaceFragment(FragmentRecordSound())
+            FragmentId.SEND_SOUND -> fragmentManager.replaceFragment(FragmentSendSound())
+            FragmentId.SOUNDS -> fragmentManager.replaceFragment(FragmentSounds())
+            FragmentId.DUBS -> fragmentManager.replaceFragment(FragmentVideos())
         }
     }
 

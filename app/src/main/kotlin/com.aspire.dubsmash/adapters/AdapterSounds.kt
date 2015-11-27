@@ -95,7 +95,7 @@ class AdapterSounds(private val act: Activity, private var sounds: List<Sound>) 
                 }
             } else if (id == playSound.id) {
                 if (isPlaying) {
-                    stopAndReleaseMediaPlayer(mediaPlayer)
+                    mediaPlayer?.stopAndRelease()
                     playingSoundButton?.setImageResource(R.drawable.ic_play)
                     playingSoundButton = playSound
                     playSound.setImageResource(R.drawable.download)

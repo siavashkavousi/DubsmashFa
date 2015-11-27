@@ -167,7 +167,7 @@ class FragmentCutSound(val sourcePath: String) : Fragment() {
     }
 
     private fun next() {
-        stopAndReleaseMediaPlayer(mediaPlayer)
+        mediaPlayer?.stopAndRelease()
         //        startActivity(Intent(this, ActivitySendSound::class.java).putExtra(Constants.SOUND_PATH, resPath))
         //        finish()
     }

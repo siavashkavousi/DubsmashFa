@@ -3,6 +3,7 @@ package com.aspire.dubsmash.fragments
 import android.app.Fragment
 import android.media.MediaRecorder
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +13,9 @@ import android.widget.TextView
 import com.aspire.dubsmash.R
 import com.aspire.dubsmash.util.FragmentId
 import com.aspire.dubsmash.util.bindView
-import com.aspire.dubsmash.util.executor
 import com.aspire.dubsmash.util.tempSoundPath
 import org.jetbrains.anko.act
 import org.jetbrains.anko.onClick
-import org.jetbrains.anko.onUiThread
 
 /**
  * Created by hojjat on 9/30/15 modified by sia on 11/22/15.
@@ -33,7 +32,7 @@ class FragmentRecordSound : Fragment() {
 
     private var recording: Boolean = false
     private var recordingStartTime: Long = 0
-    private var length: Long = 0
+    private lateinit var countDownTimer: CountDownTimer
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_record_sound, container, false)
@@ -74,45 +73,54 @@ class FragmentRecordSound : Fragment() {
         recording = true
         startRecordingViewsStyle()
         recordingStartTime = System.currentTimeMillis()
-        executor.execute {
-            mediaRecorder.setUp()
-            mediaRecorder.start()
-            while (recording) {
-                length = System.currentTimeMillis() - recordingStartTime
-                if (length < 10 * 1000)
-                    onUiThread { timer.text = "%.1f".format((10000 - length) / 1000.toFloat()) + " ثانیه" }
-                else
-                    finishRecording()
+        mediaRecorder.setUp()
+        mediaRecorder.start()
+        startCountDownTimer()
+    }
 
-                Thread.sleep(100)
+    private fun startCountDownTimer() {
+        countDownTimer = object : CountDownTimer(10000, 100) {
+
+            override fun onTick(millisUntilFinished: Long) {
+                timer.text = (millisUntilFinished / 100).toString() + " میلی ثانیه"
             }
-        }
+
+            override fun onFinish() {
+                finishRecording()
+            }
+        }.start()
     }
 
     private fun finishRecording() {
-        stopAndReleaseMediaRecorder()
+        stopRecordingViewsStyle()
+        mediaRecorder.stopAndReset()
+        countDownTimer.cancel()
         callback.switchFragmentTo(FragmentId.SEND_SOUND)
     }
 
-    private fun stopAndReleaseMediaRecorder() {
-        stopAndResetMediaRecorder()
-        mediaRecorder.release()
+    private fun MediaRecorder.stopAndRelease() {
+        stopAndReset()
+        release()
     }
 
-    private fun stopAndResetMediaRecorder() {
-        if (recording) mediaRecorder.stop()
-        mediaRecorder.reset()
+    private fun MediaRecorder.stopAndReset() {
+        if (recording) stop()
+        reset()
         recording = false
     }
 
+    private inline fun safeCancel(function: () -> Unit) {
+        if (recording) function()
+    }
+
     private fun MediaRecorder.setUp() {
-        this.setAudioSource(MediaRecorder.AudioSource.MIC)
-        this.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-        this.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-        this.setAudioEncodingBitRate(99999999)
-        this.setAudioSamplingRate(99999999)
-        this.setOutputFile(tempSoundPath)
-        this.prepare()
+        setAudioSource(MediaRecorder.AudioSource.MIC)
+        setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+        setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+        setAudioEncodingBitRate(99999999)
+        setAudioSamplingRate(99999999)
+        setOutputFile(tempSoundPath)
+        prepare()
     }
 
     override fun onResume() {
@@ -122,11 +130,17 @@ class FragmentRecordSound : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        stopAndResetMediaRecorder()
+        safeCancel {
+            countDownTimer.cancel()
+            mediaRecorder.stopAndReset()
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        stopAndReleaseMediaRecorder()
+        safeCancel {
+            countDownTimer.cancel()
+            mediaRecorder.stopAndRelease()
+        }
     }
 }
