@@ -58,12 +58,12 @@ class AdapterSounds(private val act: Activity, private var sounds: List<Sound>) 
         }
 
         fun bindView(sound: Sound) {
-            title.text = sound.soundTitle
+            title.text = sound.title
             if (sound.isLiked)
                 likeButton.setImageResource(R.drawable.favorite_selected)
             else
                 likeButton.setImageResource(R.drawable.favorite_unselected)
-            uploadedBy.text = sound.soundSenderName
+            uploadedBy.text = sound.senderName
             this.sound = sound
         }
 
@@ -78,7 +78,7 @@ class AdapterSounds(private val act: Activity, private var sounds: List<Sound>) 
             if (id == likeButton.id) {
                 if (!sound.isLiked) {
                     likeButton.setImageResource(R.drawable.favorite_selected)
-                    val result = networkApi.getSoundLikes(getUserId(context), sound.soundId)
+                    val result = networkApi.getSoundLikes(getUserId(context), sound.Id)
                     result.enqueue(object : Callback<Response> {
                         override fun onResponse(response: retrofit.Response<Response>, retrofit: Retrofit?) {
                             throw UnsupportedOperationException()
@@ -104,7 +104,7 @@ class AdapterSounds(private val act: Activity, private var sounds: List<Sound>) 
                     playSound.setImageResource(R.drawable.download)
                     isPlaying = true
                 }
-                val result = networkApi.downloadSingleData(sound.soundUrl)
+                val result = networkApi.downloadSingleData(sound.url)
                 result.enqueue(object : Callback<Response> {
                     override fun onResponse(response: retrofit.Response<Response>, retrofit: Retrofit?) {
                         FileOutputStream(tempSoundPath).write(response.body().body().bytes())
@@ -132,7 +132,7 @@ class AdapterSounds(private val act: Activity, private var sounds: List<Sound>) 
                 progressDialog.setMessage("کمی صبر کنید")
                 progressDialog.setCancelable(false)
                 progressDialog.show()
-                val result = networkApi.downloadSingleData(sound.soundUrl)
+                val result = networkApi.downloadSingleData(sound.url)
                 result.enqueue(object : Callback<Response> {
                     override fun onResponse(response: retrofit.Response<Response>, retrofit: Retrofit?) {
                         progressDialog.dismiss()

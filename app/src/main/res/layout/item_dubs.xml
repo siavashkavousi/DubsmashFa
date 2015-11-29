@@ -11,7 +11,7 @@
         tools:ignore="contentDescription"/>
 
     <VideoView
-        android:id="@+id/item_video"
+        android:id="@+id/item_dub"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

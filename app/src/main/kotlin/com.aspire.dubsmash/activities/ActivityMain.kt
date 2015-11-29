@@ -46,13 +46,13 @@ class ActivityMain : AppCompatActivity(),
         //            FragmentId.CUT_SOUND ->fragmentManager.replaceFragment(FragmentCutSound())
             FragmentId.FIRST_RUN -> fragmentManager.replaceFragment(FragmentFirstRun())
             FragmentId.MY_SOUNDS -> fragmentManager.replaceFragment(FragmentMySounds())
-            FragmentId.MY_DUBS -> fragmentManager.replaceFragment(FragmentMyVideos())
+            FragmentId.MY_DUBS -> fragmentManager.replaceFragment(FragmentMyDubs())
         //            FragmentId.PROCESS_DUB->fragmentManager.replaceFragment(FragmentProcessDub())
             FragmentId.RECORD_DUB -> fragmentManager.replaceFragment(FragmentRecordDub().withArguments(SOUND_PATH to values[0]))
             FragmentId.RECORD_SOUND -> fragmentManager.replaceFragment(FragmentRecordSound())
             FragmentId.SEND_SOUND -> fragmentManager.replaceFragment(FragmentSendSound())
             FragmentId.SOUNDS -> fragmentManager.replaceFragment(FragmentSounds())
-            FragmentId.DUBS -> fragmentManager.replaceFragment(FragmentVideos())
+            FragmentId.DUBS -> fragmentManager.replaceFragment(FragmentDubs())
         }
     }
 

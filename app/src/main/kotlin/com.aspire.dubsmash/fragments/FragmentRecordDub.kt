@@ -156,7 +156,7 @@ class FragmentRecordDub : Fragment(), SurfaceHolder.Callback {
         setVideoFrameRate(30)
         setVideoSize(preferredVideoSize.width, preferredVideoSize.height)
         setOrientationBasedOnCamera()
-        setOutputFile(tempVideoPath)
+        setOutputFile(tempDubPath)
         setPreviewDisplay(surfaceHolder.surface)
         prepare()
     }

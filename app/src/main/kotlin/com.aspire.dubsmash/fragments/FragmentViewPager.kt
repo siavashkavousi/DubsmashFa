@@ -38,7 +38,7 @@ class FragmentViewPager : Fragment() {
         return FragmentPagerItemAdapter(
                 fragmentManager, FragmentPagerItems.with(act)
                 .add("صدا ها", FragmentSounds::class.java)
-                .add("داب ها", FragmentVideos::class.java)
+                .add("داب ها", FragmentDubs::class.java)
                 .create())
     }
 }

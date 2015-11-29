@@ -53,7 +53,7 @@ class FragmentProcessDub(val soundPath: String, val dubPath: String) : Fragment(
         }
 
         done.onClick {
-            val result = networkApi.uploadVideo(getUserId(ctx), File(tempVideoPath), File("x"))
+            val result = networkApi.uploadDub(getUserId(ctx), File(tempDubPath), File("x"))
             result.enqueue(object : Callback<Response> {
                 override fun onResponse(response: retrofit.Response<Response>?, retrofit: Retrofit?) {
                     throw UnsupportedOperationException()
@@ -69,7 +69,7 @@ class FragmentProcessDub(val soundPath: String, val dubPath: String) : Fragment(
     }
 
     private fun processDub() {
-        val movie = MovieCreator.build(videoPath)
+        val movie = MovieCreator.build(DUB_PATH)
         val sound = MovieCreator.build(soundPath)
         movie.addTrack(sound.tracks[0])
         val mp4File = DefaultMp4Builder().build(movie)

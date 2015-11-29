@@ -42,13 +42,13 @@ val mySoundsPath = baseDirectory + "/mySounds"
 val myDubsPath = baseDirectory + "/myDubs"
 val downloadsPath = baseDirectory + "/downloads"
 val tempSoundPath = tempPath + "/tempSound.m4a"
-val tempVideoPath = tempPath + "/tempVideo.mp4"
+val tempDubPath = tempPath + "/tempDub.mp4"
 val tempThumbnailPath = tempPath + "/tempThumbnail.png"
 
 val SOUND_PATH = "SOUND_PATH"
-val videoPath = "DUB_PATH"
-val notAssigned = "NOT_ASSIGNED"
-val unknown = "unknown"
+val DUB_PATH = "DUB_PATH"
+val NOT_ASSIGNED = "NOT_ASSIGNED"
+val UNKNOWN = "UNKNOWN"
 
 // sounds & videos latest or trending constants
 val latest = "latest"
@@ -57,7 +57,7 @@ val trending = "trending"
 // thread pool and thread related vars
 private val coreCount = Runtime.getRuntime().availableProcessors()
 val executor = Executors.newFixedThreadPool(coreCount + 1)
-val signalToPlayVideo = ResettableCountDownLatch(1)
+val signalToPlayDub = ResettableCountDownLatch(1)
 
 val fileMaxLength = 10 * 1000
 val fileMinLength = 1 * 1000
@@ -114,7 +114,7 @@ fun getUserId(context: Context): String {
     val preferences = context.getSharedPreferences(mainPreferences, Context.MODE_PRIVATE)
     if (!preferences.contains(userId))
         registerUser(context)
-    return preferences.getString(userId, unknown)
+    return preferences.getString(userId, UNKNOWN)
 }
 
 fun registerUser(context: Context) {
@@ -183,8 +183,8 @@ fun MediaPlayer.stopAndReset() {
     reset()
 }
 
-fun stopNReset(mediaPlayer: MediaPlayer){
-    if(mediaPlayer.isPlaying) mediaPlayer.stop()
+fun stopNReset(mediaPlayer: MediaPlayer) {
+    if (mediaPlayer.isPlaying) mediaPlayer.stop()
     mediaPlayer.reset()
 }
 

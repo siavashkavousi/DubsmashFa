@@ -11,22 +11,22 @@ import java.io.File
 interface NetworkApi {
     @FormUrlEncoded @POST() fun getHost(@Field("getHost") msg: String): Call<SingleResult<Host>>
 
-    @Multipart @POST("uploadSound.php") fun uploadSound(@Part("sound_senderid") soundSenderId: String, @Part("sound_file") soundFile: File,
-                                                        @Part("sound_title") soundTitle: String, @Part("sound_tags") tags: String): Call<Response>
+    @Multipart @POST("uploadSound.php") fun uploadSound(@Part("sound_senderid") senderId: String, @Part("sound_file") soundFile: File,
+                                                        @Part("sound_title") title: String, @Part("sound_tags") tags: String): Call<Response>
 
-    @Multipart @POST("uploadVideo.php") fun uploadVideo(@Part("video_recorderid") videoRecorderId: String, @Part("video_file") videoFile: File,
-                                                        @Part("video_tumbnail") videoThumbnail: File, @Part("video_title") videoTitle: String? = null,
+    @Multipart @POST("uploadVideo.php") fun uploadDub(@Part("video_recorderid") recorderId: String, @Part("video_file") dubFile: File,
+                                                        @Part("video_tumbnail") thumbnail: File, @Part("video_title") title: String? = null,
                                                         @Part("video_tags") tags: String? = null): Call<Response>
 
     @FormUrlEncoded @POST("getSound.php") fun downloadSounds(@Field("retrieve_mode") retrieve: String, @Field("bunch") group: String,
                                                              @Field("qty") quantity: String, @Field("tag") tags: String? = null): Call<MultipleResult<Sound>>
 
-    @FormUrlEncoded @POST("getVideo.php") fun downloadVideos(@Field("retrieve_mode") retrieve: String, @Field("bunch") group: String,
-                                                             @Field("qty") quantity: String, @Field("tag") tags: String? = null): Call<MultipleResult<Video>>
+    @FormUrlEncoded @POST("getVideo.php") fun downloadDubs(@Field("retrieve_mode") retrieve: String, @Field("bunch") group: String,
+                                                             @Field("qty") quantity: String, @Field("tag") tags: String? = null): Call<MultipleResult<Dub>>
 
-    @FormUrlEncoded @POST("likeSound.php") fun getSoundLikes(@Field("user_id") userId: String, @Field("sound_id") soundId: String): Call<Response>
+    @FormUrlEncoded @POST("likeSound.php") fun getSoundLikes(@Field("user_id") userId: String, @Field("sound_id") id: String): Call<Response>
 
-    @FormUrlEncoded @POST("likeVideo.php") fun getVideoLikes(@Field("user_id") userId: String, @Field("video_id") videoId: String): Call<Response>
+    @FormUrlEncoded @POST("likeVideo.php") fun getDubLikes(@Field("user_id") userId: String, @Field("video_id") id: String): Call<Response>
 
     @FormUrlEncoded @POST("register.php") fun registerUsername(@Field("user_name") username: String): Call<SingleResult<User>>
 

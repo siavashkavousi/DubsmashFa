@@ -29,7 +29,7 @@ class FragmentMySounds : Fragment() {
     private var adapter: AdapterMySounds? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_my_sounds_videos, container, false)
+        return inflater.inflate(R.layout.fragment_my_sounds_dubs, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
