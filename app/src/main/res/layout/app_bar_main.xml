@@ -6,20 +6,14 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MainActivity"
+    >
 
-    <android.support.design.widget.AppBarLayout
+
+    <com.aspire.dubsmash.util.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="end"
-        android:theme="@style/AppTheme.AppBarOverlay">
-
-        <com.aspire.dubsmash.util.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
-
-    </android.support.design.widget.AppBarLayout>
+        android:layout_height="wrap_content"/>
 
     <FrameLayout
         android:id="@+id/container"

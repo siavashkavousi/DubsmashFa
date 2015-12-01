@@ -11,14 +11,15 @@ import android.widget.TextView
 import com.aspire.dubsmash.R
 import org.jetbrains.anko.layoutInflater
 import org.jetbrains.anko.onClick
+import org.jetbrains.anko.wrapContent
 
 /**
  * Created by sia on 11/16/15.
  */
 class Toolbar : Toolbar {
-    private val toolbarTitle: TextView by bindView(R.id.toolbar_title)
-    private val toolbarRight: ImageButton by bindView(R.id.toolbar_action)
-    private val toolbarLeft: ImageButton by bindView(R.id.toolbar_hamburger)
+    private val title: TextView by bindView(R.id.toolbar_title)
+    val right: ImageButton by bindView(R.id.toolbar_right)
+    val left: ImageButton by bindView(R.id.toolbar_left)
 
     constructor(context: Context) : super(context) {
         setUp(context)
@@ -34,39 +35,43 @@ class Toolbar : Toolbar {
 
     private fun setUp(context: Context) {
         context.layoutInflater.inflate(R.layout.layout_toolbar, this, true)
+        setContentInsetsAbsolute(0, 0)
+        elevation = 2.0f
+        minimumWidth = wrapContent
+        minimumHeight = 56
     }
 
     fun setTitle(title: String) {
-        toolbarTitle.text = title
+        this.title.text = title
     }
 
     fun setTitleStyle(typeface: Typeface) {
-        toolbarTitle.typeface = typeface
+        title.typeface = typeface
     }
 
     fun defaultTitleStyle() {
-        toolbarTitle.typeface = getFont(context, Font.AFSANEH)
+        title.typeface = getFont(context, Font.AFSANEH)
     }
 
-    fun setActionItemVisibility(visibility: Int) {
-        toolbarRight.visibility = visibility
+    fun setRightItemVisibility(visibility: Int) {
+        right.visibility = visibility
     }
 
-    fun setLeftAction(function: () -> Unit) {
-        if (toolbarRight.visibility != VISIBLE) setActionItemVisibility(VISIBLE)
-        toolbarRight.onClick {
+    inline fun setRightAction(crossinline function: () -> Unit) {
+        if (right.visibility != VISIBLE) setRightItemVisibility(VISIBLE)
+        right.onClick {
             function()
         }
     }
 
-    fun setRightAction(function: () -> Unit) {
-        toolbarLeft.onClick {
+    inline fun setLeftAction(crossinline function: () -> Unit) {
+        left.onClick {
             function()
         }
     }
 
     fun defaultHamburgerAction(drawer: DrawerLayout) {
-        toolbarLeft.onClick {
+        left.onClick {
             if (drawer.isDrawerOpen(GravityCompat.END)) {
                 drawer.closeDrawer(GravityCompat.END)
             } else {
