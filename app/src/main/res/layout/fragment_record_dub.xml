@@ -38,7 +38,7 @@
     <ToggleButton
         android:id="@+id/toggle_recording"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_size"
+        android:layout_height="@dimen/default_button_size"
         android:background="@drawable/big_button_background"
         android:gravity="center"
         android:textColor="@android:color/white"

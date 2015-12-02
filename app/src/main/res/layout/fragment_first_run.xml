@@ -6,7 +6,7 @@
     <Button
         android:id="@+id/done"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/toolbar_size"
+        android:layout_height="@dimen/default_button_size"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:background="@drawable/big_button_background"

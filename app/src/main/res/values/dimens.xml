@@ -3,7 +3,7 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
-    <dimen name="toolbar_size">56dp</dimen>
+    <dimen name="default_button_size">?attr/actionBarSize</dimen>
 
     <dimen name="text_size_xlarge">22sp</dimen>
     <dimen name="text_size_large">20sp</dimen>

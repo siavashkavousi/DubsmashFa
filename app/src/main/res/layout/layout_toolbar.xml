@@ -2,15 +2,15 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
     <RelativeLayout
-        android:background="@color/primary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/primary"
         android:orientation="horizontal">
 
         <ImageButton
             android:id="@+id/toolbar_left"
-            android:layout_width="@dimen/toolbar_size"
-            android:layout_height="@dimen/toolbar_size"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
@@ -31,8 +31,8 @@
 
         <ImageButton
             android:id="@+id/toolbar_right"
-            android:layout_width="@dimen/toolbar_size"
-            android:layout_height="@dimen/toolbar_size"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true"
